@@ -1,11 +1,11 @@
-package org.example.steps;
+package ru.worktech.steps;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import org.example.core.AssertableResponse;
-import org.example.models.AutorizationRequest;
-import org.example.models.RegistrationRequest;
-import org.example.services.UserService;
+import ru.worktech.core.AssertableResponse;
+import ru.worktech.models.AutorizationRequest;
+import ru.worktech.models.RegistrationRequest;
+import ru.worktech.services.UserService;
 
 public class UserSteps {
 

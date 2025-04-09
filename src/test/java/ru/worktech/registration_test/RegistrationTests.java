@@ -1,8 +1,7 @@
-package registration_test;
+package ru.worktech.registration_test;
 
-import org.apache.http.HttpStatus;
-import org.example.models.RegistrationRequest;
-import org.example.steps.UserSteps;
+import ru.worktech.models.RegistrationRequest;
+import ru.worktech.steps.UserSteps;
 import org.testng.annotations.Test;
 
 import static org.apache.http.HttpStatus.SC_OK;

@@ -1,10 +1,10 @@
-package org.example.core;
+package ru.worktech.core;
 
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import io.restassured.specification.RequestSpecification;
 import org.aeonbits.owner.ConfigFactory;
-import org.example.config.ApiConfig;
+import ru.worktech.config.ApiConfig;
 
 public abstract class BaseApiService {
 

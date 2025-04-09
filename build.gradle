@@ -2,7 +2,14 @@ plugins {
     id 'java'
 }
 
-group = 'org.example'
+
+java {
+    apply plugin: 'java'
+    sourceCompatibility = 21
+    targetCompatibility = 21
+}
+
+group = 'ru.worktech'
 version = '1.0-SNAPSHOT'
 
 repositories {

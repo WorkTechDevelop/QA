@@ -3,7 +3,7 @@
 <suite name="All Test Suite">
     <test verbose="2" name="restfulBooker">
         <classes>
-            <class name="registration_test.RegistrationTests"> </class>
+            <class name="ru.worktech.registration_test.RegistrationTests"> </class>
         </classes>
     </test>
 </suite>

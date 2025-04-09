@@ -1,8 +1,8 @@
-package org.example.services;
+package ru.worktech.services;
 
 import io.restassured.response.Response;
-import org.example.core.BaseApiService;
-import org.example.endpoints.Endpoints;
+import ru.worktech.core.BaseApiService;
+import ru.worktech.endpoints.Endpoints;
 
 public class TaskService extends BaseApiService {
 

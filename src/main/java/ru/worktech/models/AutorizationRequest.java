@@ -1,4 +1,4 @@
-package org.example.models;
+package ru.worktech.models;
 
 import lombok.Data;
 

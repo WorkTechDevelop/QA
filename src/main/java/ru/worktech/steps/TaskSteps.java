@@ -1,9 +1,9 @@
-package org.example.steps;
+package ru.worktech.steps;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import org.example.core.AssertableResponse;
-import org.example.services.TaskService;
+import ru.worktech.core.AssertableResponse;
+import ru.worktech.services.TaskService;
 
 public class TaskSteps {
 
