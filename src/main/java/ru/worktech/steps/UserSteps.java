@@ -3,7 +3,7 @@ package ru.worktech.steps;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.worktech.core.AssertableResponse;
-import ru.worktech.models.AutorizationRequest;
+import ru.worktech.models.AuthorizationRequest;
 import ru.worktech.models.RegistrationRequest;
 import ru.worktech.services.UserService;
 
@@ -18,7 +18,7 @@ public class UserSteps {
     }
 
     @Step("Авторизовать пользователя")
-    public AssertableResponse loginUser(AutorizationRequest user) {
+    public AssertableResponse loginUser(AuthorizationRequest user) {
         Response response = userService.loginUser(user);
         return new AssertableResponse(response);
     }
