@@ -1,10 +1,12 @@
 package ru.worktech.registration_test;
 
-import ru.worktech.models.RegistrationRequest;
-import ru.worktech.steps.UserSteps;
 import org.testng.annotations.Test;
+import ru.worktech.steps.UserSteps;
 
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
+import static ru.worktech.models.RegistrationRequest.RegistrationRequestBuilder;
+import static ru.worktech.models.RegistrationRequest.builder;
 
 public class RegistrationTests {
 
@@ -12,20 +14,26 @@ public class RegistrationTests {
 
     @Test
     public void testSuccessfulRegistration() {
-        RegistrationRequest user = new RegistrationRequest(
-                "testttiks@gmail.com",
-                "password123",
-                "password123",
-                "Doe",
-                "John",
-                "Middle",
-                "1234567890",
-                "27-05-1995",
-                "MALE"
-        );
-        userSteps.registerUser(user)
+        userSteps.registerUser(getDefaultRegistration().build())
                 .checkStatusCode(SC_OK);
+    }
 
+    @Test
+    public void testFailedOnEmptyEmailRegistration() {
+        userSteps.registerUser(getDefaultRegistration().email("").build())
+                .checkStatusCode(SC_BAD_REQUEST);
+    }
 
+    private RegistrationRequestBuilder getDefaultRegistration(){
+        return builder()
+                .email("default@gmail.com")
+                .password("defaultPassword")
+                .confirmPassword("defaultPassword")
+                .lastName("defaultLastName")
+                .firstName("defaultFirstName")
+                .middleName("defaultMiddleName")
+                .phone("+79991001010")
+                .birthDate("01-01-1971")
+                .gender("MALE");
     }
 }
