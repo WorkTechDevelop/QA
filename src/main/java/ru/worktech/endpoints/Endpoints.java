@@ -1,4 +1,4 @@
-package org.example.endpoints;
+package ru.worktech.endpoints;
 
 public class Endpoints {
 

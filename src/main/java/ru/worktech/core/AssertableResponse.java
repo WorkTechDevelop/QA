@@ -1,4 +1,4 @@
-package org.example.core;
+package ru.worktech.core;
 
 import io.restassured.response.Response;
 

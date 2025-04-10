@@ -1,4 +1,4 @@
-package org.example.config;
+package ru.worktech.config;
 
 import org.aeonbits.owner.Config;
 

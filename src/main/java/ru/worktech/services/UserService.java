@@ -1,12 +1,12 @@
-package org.example.services;
+package ru.worktech.services;
 
 import io.restassured.response.Response;
-import org.example.core.BaseApiService;
-import org.example.models.AutorizationRequest;
-import org.example.models.RegistrationRequest;
+import ru.worktech.core.BaseApiService;
+import ru.worktech.models.AuthorizationRequest;
+import ru.worktech.models.RegistrationRequest;
 
-import static org.example.endpoints.Endpoints.AUTHORIZATION_ENDPOINT;
-import static org.example.endpoints.Endpoints.REGISTRATION_ENDPOINT;
+import static ru.worktech.endpoints.Endpoints.AUTHORIZATION_ENDPOINT;
+import static ru.worktech.endpoints.Endpoints.REGISTRATION_ENDPOINT;
 
 public class UserService extends BaseApiService {
 
@@ -17,7 +17,7 @@ public class UserService extends BaseApiService {
                 .post(REGISTRATION_ENDPOINT);
     }
 
-    public Response loginUser(AutorizationRequest user) {
+    public Response loginUser(AuthorizationRequest user) {
         return getRequestSpec()
                 .body(user)
                 .when()
