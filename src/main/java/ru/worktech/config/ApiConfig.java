@@ -7,4 +7,11 @@ public interface ApiConfig extends Config {
 
     @Config.Key("baseUrl")
     String baseUrl();
+
+    @Config.Key("login")
+    String login();
+
+    @Config.Key("password")
+    String password();
+
 }

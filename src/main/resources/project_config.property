@@ -1,1 +1,3 @@
-baseUrl=http://91.211.249.37:31055
+baseUrl=http://91.211.249.37/test
+login=defaulеt@gmail.com
+password=defaultPassword
