@@ -1,5 +1,6 @@
 package ru.worktech.registration_test;
 
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import ru.worktech.steps.UserSteps;
 
@@ -10,6 +11,9 @@ import static ru.worktech.models.RegistrationRequest.builder;
 public class RegistrationTests {
 
     private final UserSteps userSteps = new UserSteps();
+
+    @AfterMethod
+
 
     @Test
     public void testSuccessfulRegistration() {
