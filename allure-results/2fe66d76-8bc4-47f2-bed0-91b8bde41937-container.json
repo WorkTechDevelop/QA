@@ -1,1 +1,11 @@
-{"uuid":"2fe66d76-8bc4-47f2-bed0-91b8bde41937","name":"Gradle test","children":["300e83c0-5b08-4bf8-8402-850cc35ac68a"],"befores":[],"afters":[],"start":1744813512759,"stop":1744813513982}
+{
+  "uuid": "2fe66d76-8bc4-47f2-bed0-91b8bde41937",
+  "name": "Gradle test",
+  "children": [
+    "300e83c0-5b08-4bf8-8402-850cc35ac68a"
+  ],
+  "befores": [],
+  "afters": [],
+  "start": 1744813512759,
+  "stop": 1744813513982
+}
