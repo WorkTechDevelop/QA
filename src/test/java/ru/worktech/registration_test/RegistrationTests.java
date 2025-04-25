@@ -26,7 +26,7 @@ public class RegistrationTests {
 
     private RegistrationRequestBuilder getDefaultRegistration(){
         return builder()
-                .email("default@gmail.com")
+                .email("defaulеt@gmail.com")
                 .password("defaultPassword")
                 .confirmPassword("defaultPassword")
                 .lastName("defaultLastName")
@@ -34,6 +34,6 @@ public class RegistrationTests {
                 .middleName("defaultMiddleName")
                 .phone("+79991001010")
                 .birthDate("01-01-1971")
-                .gender("MALE");
+                .gender(" ");
     }
 }
