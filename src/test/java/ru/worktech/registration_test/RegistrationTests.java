@@ -2,6 +2,8 @@ package ru.worktech.registration_test;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import ru.worktech.services.DataBaseManageService;
+import ru.worktech.services.TestDataGenerator;
 import ru.worktech.steps.UserSteps;
 
 import static org.apache.http.HttpStatus.*;
@@ -11,10 +13,23 @@ import static ru.worktech.models.RegistrationRequest.builder;
 public class RegistrationTests {
 
     private final UserSteps userSteps = new UserSteps();
+    private final DataBaseManageService dbmanage = new DataBaseManageService();
+    private String userEmail;
 
-    //
     @AfterMethod
+    public void deleteUserFromDataBase() {
+        if(userEmail != null) {
+            dbmanage.deleteUser(userEmail);
+        }
+    }
 
+    // TODO: вынести на обсуждение формат тестового метода ниже. Добавлен генератор для емэйлов, который подвязан и будет удалять в БД. Также
+    @Test
+    public void testSuccessfullRegistration() {
+        userEmail = TestDataGenerator.generateEmail();
+        userSteps.registerUser (getDefaultRegistration().email(userEmail).build())
+                .checkStatusCode(SC_OK);
+    }
 
     @Test
     public void testSuccessfulRegistration() {
@@ -24,6 +39,7 @@ public class RegistrationTests {
 
     @Test
     public void testExistedUserRegistration() {
+        userSteps.registerUser(getDefaultRegistration().build());
         userSteps.registerUser(getDefaultRegistration().build())
                 .checkStatusCode(SC_BAD_REQUEST);
     }
@@ -70,7 +86,7 @@ public class RegistrationTests {
                 .checkStatusCode(SC_BAD_REQUEST);
     }
 
-    private RegistrationRequestBuilder getDefaultRegistration(){
+    private RegistrationRequestBuilder getDefaultRegistration() {
         return builder()
                 .email("default@gmail.com")
                 .password("defaultPassword")
