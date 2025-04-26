@@ -1,3 +1,2 @@
 baseUrl=http://91.211.249.37/test
-login=defaulеt@gmail.com
-password=defaultPassword
+baseProdUrl=http://91.211.249.37/prod

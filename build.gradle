@@ -31,6 +31,7 @@ dependencies {
     implementation 'io.qameta.allure:allure-assertj:2.20.1'
     implementation 'io.qameta.allure:allure-rest-assured:2.20.1'
     implementation 'io.qameta.allure:allure-java-commons:2.20.1'
+    implementation 'mysql:mysql-connector-java:8.0.32'
 }
 
 test {

@@ -2,27 +2,37 @@ package ru.worktech.registration_test;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import ru.worktech.services.DataBaseManageService;
 import ru.worktech.steps.UserSteps;
 
 import static org.apache.http.HttpStatus.*;
 import static ru.worktech.models.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.RegistrationRequest.builder;
+import static ru.worktech.services.TestDataGenerator.generateEmail;
 
 public class RegistrationTests {
 
     private final UserSteps userSteps = new UserSteps();
+    private final DataBaseManageService dbManage = new DataBaseManageService();
+    private String userEmail;
 
     @AfterMethod
-
+    public void deleteUserFromDataBase() {
+        if (userEmail != null) {
+            dbManage.deleteUser(userEmail);
+        }
+    }
 
     @Test
     public void testSuccessfulRegistration() {
-        userSteps.registerUser(getDefaultRegistration().build())
+        userEmail = generateEmail();
+        userSteps.registerUser(getDefaultRegistration().email(userEmail).build())
                 .checkStatusCode(SC_OK);
     }
 
     @Test
     public void testExistedUserRegistration() {
+        userSteps.registerUser(getDefaultRegistration().build());
         userSteps.registerUser(getDefaultRegistration().build())
                 .checkStatusCode(SC_BAD_REQUEST);
     }
@@ -47,8 +57,8 @@ public class RegistrationTests {
 
     @Test
     public void testCorrectConfirmPassword() {
-        userSteps.registerUser(getDefaultRegistration().password("defaultPassword123").confirmPassword("defaultPassword123").build())
-                .checkStatusCode(SC_CREATED);
+        userSteps.registerUser(getDefaultRegistration().password("defaultPassword123")
+                        .confirmPassword("defaultPassword123").build()).checkStatusCode(SC_OK);
     }
 
     @Test
@@ -69,9 +79,9 @@ public class RegistrationTests {
                 .checkStatusCode(SC_BAD_REQUEST);
     }
 
-    private RegistrationRequestBuilder getDefaultRegistration(){
+    private RegistrationRequestBuilder getDefaultRegistration() {
         return builder()
-                .email("defaulеt@gmail.com")
+                .email("default@gmail.com")
                 .password("defaultPassword")
                 .confirmPassword("defaultPassword")
                 .lastName("defaultLastName")
@@ -79,6 +89,6 @@ public class RegistrationTests {
                 .middleName("defaultMiddleName")
                 .phone("+79991001010")
                 .birthDate("01-01-1971")
-                .gender(" ");
+                .gender("MALE");
     }
 }
