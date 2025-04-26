@@ -1,25 +1,48 @@
 package ru.worktech.core;
 
 import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.parsing.Parser;
 import io.restassured.specification.RequestSpecification;
+import org.aeonbits.owner.ConfigFactory;
 import ru.worktech.config.ApiConfig;
+import ru.worktech.models.AuthorizationRequest;
 
 import static io.restassured.RestAssured.*;
-import static io.restassured.parsing.Parser.JSON;
-import static org.aeonbits.owner.ConfigFactory.create;
+import static ru.worktech.endpoints.Endpoints.AUTHORIZATION_ENDPOINT;
 
 public abstract class BaseApiService {
 
-    protected static final ApiConfig config = create(ApiConfig.class);
+    protected static final ApiConfig config = ConfigFactory.create(ApiConfig.class);
+    private static String authToken;
 
     static {
-        registerParser("text/plain", JSON);
+        registerParser("text/plain", Parser.JSON);
+    }
+
+    protected static String getAuthToken() {
+        if (authToken == null) {
+            authToken = fetchNewToken();
+        }
+        return authToken;
     }
 
     protected RequestSpecification getRequestSpec() {
         filters(new ResponseLoggingFilter());
         return given().log().all()
                 .baseUri(config.baseUrl())
-                .contentType("application/json");
+                .contentType("application/json")
+                .header("Authorization", "Bearer " + getAuthToken());      //в тестах на авторизацию хидер нужно будет нулить
+    }
+
+    private static String fetchNewToken() {
+        return given()
+                .baseUri(config.baseUrl())
+                .contentType("application/json")
+                .body(new AuthorizationRequest(config.login(), config.password()))
+                .when()
+                .post(AUTHORIZATION_ENDPOINT)
+                .then()
+                .extract()
+                .path("token");
     }
 }
