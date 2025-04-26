@@ -3,37 +3,30 @@ package ru.worktech.registration_test;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import ru.worktech.services.DataBaseManageService;
-import ru.worktech.services.TestDataGenerator;
 import ru.worktech.steps.UserSteps;
 
 import static org.apache.http.HttpStatus.*;
 import static ru.worktech.models.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.RegistrationRequest.builder;
+import static ru.worktech.services.TestDataGenerator.generateEmail;
 
 public class RegistrationTests {
 
     private final UserSteps userSteps = new UserSteps();
-    private final DataBaseManageService dbmanage = new DataBaseManageService();
+    private final DataBaseManageService dbManage = new DataBaseManageService();
     private String userEmail;
 
     @AfterMethod
     public void deleteUserFromDataBase() {
-        if(userEmail != null) {
-            dbmanage.deleteUser(userEmail);
+        if (userEmail != null) {
+            dbManage.deleteUser(userEmail);
         }
-    }
-
-    // TODO: вынести на обсуждение формат тестового метода ниже. Добавлен генератор для емэйлов, который подвязан и будет удалять в БД. Также
-    @Test
-    public void testSuccessfullRegistration() {
-        userEmail = TestDataGenerator.generateEmail();
-        userSteps.registerUser (getDefaultRegistration().email(userEmail).build())
-                .checkStatusCode(SC_OK);
     }
 
     @Test
     public void testSuccessfulRegistration() {
-        userSteps.registerUser(getDefaultRegistration().build())
+        userEmail = generateEmail();
+        userSteps.registerUser(getDefaultRegistration().email(userEmail).build())
                 .checkStatusCode(SC_OK);
     }
 
@@ -64,8 +57,8 @@ public class RegistrationTests {
 
     @Test
     public void testCorrectConfirmPassword() {
-        userSteps.registerUser(getDefaultRegistration().password("defaultPassword123").confirmPassword("defaultPassword123").build())
-                .checkStatusCode(SC_CREATED);
+        userSteps.registerUser(getDefaultRegistration().password("defaultPassword123")
+                        .confirmPassword("defaultPassword123").build()).checkStatusCode(SC_OK);
     }
 
     @Test
