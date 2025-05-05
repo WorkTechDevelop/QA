@@ -2,6 +2,7 @@ package ru.worktech.core;
 
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.parsing.Parser;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.aeonbits.owner.ConfigFactory;
 import ru.worktech.config.ApiConfig;
@@ -35,14 +36,19 @@ public abstract class BaseApiService {
     }
 
     private static String fetchNewToken() {
-        return given()
+        Response response = given()
                 .baseUri(config.baseUrl())
                 .contentType("application/json")
                 .body(new AuthorizationRequest(config.login(), config.password()))
                 .when()
-                .post(AUTHORIZATION_ENDPOINT)
-                .then()
-                .extract()
-                .path("token");
+                .post(AUTHORIZATION_ENDPOINT);
+
+        if (response.getStatusCode() == 200) {
+            return response
+                    .jsonPath()
+                    .getString("jwtToken");
+        } else {
+            return null;
+        }
     }
 }
