@@ -6,4 +6,5 @@ public class Endpoints {
     public static final String AUTHORIZATION_ENDPOINT = "/work-task/v1/login";
     public static final String CREATE_TASK_ENDPOINT = "/work-task/v1/task/create-task";
     public static final String EDITE_TASK_ENDPOINT = "/work-task/v1/task/update-task";
+    public static final String UPDATE_TASK_STATUS_ENDPOINT = "/work-task/v1/task/update-status";
 }

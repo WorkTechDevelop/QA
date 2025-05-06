@@ -4,6 +4,7 @@ import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.worktech.core.AssertableResponse;
 import ru.worktech.models.CreateTaskRequest;
+import ru.worktech.models.UpdateTaskStatusRequest;
 import ru.worktech.services.TaskService;
 
 public class TaskSteps {
@@ -11,7 +12,7 @@ public class TaskSteps {
     private final TaskService taskService = new TaskService();
 
     @Step("Создать задачу")
-    public AssertableResponse createTask(CreateTaskRequest request) {
+    public AssertableResponse createTaskStep(CreateTaskRequest request) {
         Response response = taskService.createTask(request);
         return new AssertableResponse(response);
     }
@@ -19,6 +20,12 @@ public class TaskSteps {
     @Step("Обновить задачу")
     public AssertableResponse editTask(CreateTaskRequest request) {
         Response response = taskService.editTask(request);
+        return new AssertableResponse(response);
+    }
+
+    @Step("Обновить статус задачи")
+    public AssertableResponse updateTaskStatusStep(UpdateTaskStatusRequest request) {
+        Response response = taskService.updateTask(request);
         return new AssertableResponse(response);
     }
 }

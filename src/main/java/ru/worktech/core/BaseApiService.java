@@ -1,24 +1,24 @@
 package ru.worktech.core;
 
 import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.aeonbits.owner.ConfigFactory;
 import ru.worktech.config.ApiConfig;
 import ru.worktech.models.AuthorizationRequest;
 
 import static io.restassured.RestAssured.*;
+import static io.restassured.parsing.Parser.JSON;
+import static org.aeonbits.owner.ConfigFactory.create;
 import static org.apache.http.HttpStatus.SC_OK;
 import static ru.worktech.endpoints.Endpoints.AUTHORIZATION_ENDPOINT;
 
 public abstract class BaseApiService {
 
-    protected static final ApiConfig config = ConfigFactory.create(ApiConfig.class);
+    protected static final ApiConfig config = create(ApiConfig.class);
     private static String authToken;
 
     static {
-        registerParser("text/plain", Parser.JSON);
+        registerParser("text/plain", JSON);
     }
 
     protected static String getAuthToken() {

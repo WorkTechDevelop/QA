@@ -8,7 +8,7 @@ import ru.worktech.steps.UserSteps;
 import static org.apache.http.HttpStatus.*;
 import static ru.worktech.models.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.RegistrationRequest.builder;
-import static ru.worktech.services.TestDataGenerator.generateEmail;
+import static ru.worktech.services.TestDataGenerator.generateRandomEmail;
 
 public class RegistrationTests {
 
@@ -25,7 +25,7 @@ public class RegistrationTests {
 
     @Test
     public void testSuccessfulRegistration() {
-        userEmail = generateEmail();
+        userEmail = generateRandomEmail();
         userSteps.registerUser(getDefaultRegistration().email(userEmail).build())
                 .checkStatusCode(SC_OK);
     }

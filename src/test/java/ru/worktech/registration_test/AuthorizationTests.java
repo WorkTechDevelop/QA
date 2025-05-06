@@ -3,10 +3,11 @@ package ru.worktech.registration_test;
 import org.testng.annotations.Test;
 import ru.worktech.steps.UserSteps;
 
-import static java.util.UUID.randomUUID;
 import static org.apache.http.HttpStatus.*;
 import static ru.worktech.models.AuthorizationRequest.AuthorizationRequestBuilder;
 import static ru.worktech.models.AuthorizationRequest.builder;
+import static ru.worktech.services.TestDataGenerator.generateRandomEmail;
+import static ru.worktech.services.TestDataGenerator.generateRandomPassword;
 
 public class AuthorizationTests {
 
@@ -76,14 +77,6 @@ public class AuthorizationTests {
                                 .password(generateRandomPassword())
                                 .build())
                 .checkStatusCode(SC_UNAUTHORIZED);
-    }
-
-    private String generateRandomEmail() {
-        return "user" + randomUUID() + "@mail.com";
-    }
-
-    private String generateRandomPassword() {
-        return randomUUID().toString().substring(0, 10);
     }
 
     private AuthorizationRequestBuilder getDefaultAuthorization() {
