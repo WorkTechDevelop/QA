@@ -1,13 +1,13 @@
 package ru.worktech.services;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import static java.lang.System.out;
-import static java.sql.DriverManager.*;
+import static java.sql.DriverManager.getConnection;
 
+@SuppressWarnings("CallToPrintStackTrace")
 public class DataBaseManageService {
 
     private static final String URL = "jdbc:mysql://91.211.249.37:32500/wt_backend_test";
