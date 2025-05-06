@@ -43,6 +43,9 @@ public abstract class BaseApiService {
                 .when()
                 .post(AUTHORIZATION_ENDPOINT);
 
+        System.out.println("Auth status code: " + response.getStatusCode());
+        System.out.println("Auth response body: " + response.asString());
+
         if (response.getStatusCode() == 200) {
             return response
                     .jsonPath()

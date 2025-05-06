@@ -3,6 +3,7 @@ package ru.worktech.steps;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.worktech.core.AssertableResponse;
+import ru.worktech.models.CreateTaskRequest;
 import ru.worktech.services.TaskService;
 
 public class TaskSteps {
@@ -10,8 +11,8 @@ public class TaskSteps {
     private final TaskService taskService = new TaskService();
 
     @Step("Создать задачу")
-    public AssertableResponse creatTask(String jsonBody) {
-        Response response = taskService.createTask(jsonBody);
+    public AssertableResponse createTask(CreateTaskRequest task) {
+        Response response = taskService.createTask(task);
         return new AssertableResponse(response);
     }
 
