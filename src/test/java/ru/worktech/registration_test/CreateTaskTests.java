@@ -4,7 +4,6 @@ import org.testng.annotations.Test;
 import ru.worktech.steps.TaskSteps;
 
 import static org.apache.http.HttpStatus.SC_CREATED;
-import static org.apache.http.HttpStatus.SC_OK;
 import static ru.worktech.models.CreateTaskRequest.CreateTaskRequestBuilder;
 import static ru.worktech.models.CreateTaskRequest.builder;
 
