@@ -8,8 +8,8 @@ public interface ApiConfig extends Config {
     @Config.Key("baseUrl")
     String baseUrl();
 
-    @Config.Key("login")
-    String login();
+    @Config.Key("username")
+    String username();
 
     @Config.Key("password")
     String password();
