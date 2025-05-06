@@ -9,6 +9,7 @@ import ru.worktech.config.ApiConfig;
 import ru.worktech.models.AuthorizationRequest;
 
 import static io.restassured.RestAssured.*;
+import static org.apache.http.HttpStatus.SC_OK;
 import static ru.worktech.endpoints.Endpoints.AUTHORIZATION_ENDPOINT;
 
 public abstract class BaseApiService {
@@ -32,24 +33,18 @@ public abstract class BaseApiService {
         return given().log().all()
                 .baseUri(config.baseUrl())
                 .contentType("application/json")
-                .header("Authorization", "Bearer " + getAuthToken());      //в тестах на авторизацию хидер нужно будет нулить
+                .header("Authorization", "Bearer " + getAuthToken());
     }
 
     private static String fetchNewToken() {
         Response response = given()
                 .baseUri(config.baseUrl())
                 .contentType("application/json")
-                .body(new AuthorizationRequest(config.login(), config.password()))
+                .body(new AuthorizationRequest(config.username(), config.password()))
                 .when()
                 .post(AUTHORIZATION_ENDPOINT);
-
-        System.out.println("Auth status code: " + response.getStatusCode());
-        System.out.println("Auth response body: " + response.asString());
-
-        if (response.getStatusCode() == 200) {
-            return response
-                    .jsonPath()
-                    .getString("jwtToken");
+        if (response.getStatusCode() == SC_OK) {
+            return response.jsonPath().getString("jwtToken");
         } else {
             return null;
         }

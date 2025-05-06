@@ -11,14 +11,14 @@ public class TaskSteps {
     private final TaskService taskService = new TaskService();
 
     @Step("Создать задачу")
-    public AssertableResponse createTask(CreateTaskRequest task) {
-        Response response = taskService.createTask(task);
+    public AssertableResponse createTask(CreateTaskRequest request) {
+        Response response = taskService.createTask(request);
         return new AssertableResponse(response);
     }
 
     @Step("Обновить задачу")
-    public AssertableResponse editTask(String jsonBody) {
-        Response response = taskService.editTask(jsonBody);
+    public AssertableResponse editTask(CreateTaskRequest request) {
+        Response response = taskService.editTask(request);
         return new AssertableResponse(response);
     }
 }
