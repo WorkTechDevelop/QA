@@ -23,7 +23,8 @@ jobs:
           distribution: 'temurin'
 
       - name: Run tests with Gradle
-        run: ./gradlew clean test
+        run: chmod +x gradlew \
+            ./gradlew clean test
 
       - name: Zip Allure results
         run: |
