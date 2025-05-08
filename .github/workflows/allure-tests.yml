@@ -1,0 +1,39 @@
+name: Run Tests and Upload Allure Report
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-and-upload:
+    runs-on: ubuntu-latest
+
+    env:
+      ALLURE_RESULTS_DIR: build/allure-results
+      ALLURE_SERVER_URL: http://91.211.249.37:30355
+      PROJECT_ID: work-task-autotests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Run tests with Gradle
+        run: ./gradlew clean test
+
+      - name: Zip Allure results
+        run: |
+          sudo apt-get update && sudo apt-get install -y zip
+          zip -r allure-results.zip build/allure-results
+
+      - name: Upload Allure results to Allure Docker Service
+        run: |
+          curl -X POST "${ALLURE_SERVER_URL}/send-results" \
+               -F "results=@allure-results.zip" \
+               -F "project_id=${PROJECT_ID}"
+
+          curl -X GET "${ALLURE_SERVER_URL}/generate-report?project_id=${PROJECT_ID}"
