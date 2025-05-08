@@ -3,12 +3,6 @@ plugins {
     id 'io.qameta.allure' version '2.11.2'
 }
 
-allure {
-    version = '2.25.0'
-    autoconfigure = true
-    aspectjweaver = true
-}
-
 java {
     sourceCompatibility = 21
     targetCompatibility = 21
@@ -55,6 +49,16 @@ dependencies {
     implementation "com.mysql:mysql-connector-j:$mySQLVersion"
 }
 
+allure {
+    version = '2.25.0'
+    useTestNG {
+        version = '2.25.0'
+    }
+}
+
 test {
     useTestNG()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
