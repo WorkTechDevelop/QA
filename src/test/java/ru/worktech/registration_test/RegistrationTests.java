@@ -23,7 +23,7 @@ public class RegistrationTests {
         }
     }
 
-    @Test
+    @Test(description = "Успешная регистрация пользователя")
     public void testSuccessfulRegistration() {
         userEmail = generateEmail();
         userSteps.registerUser(getDefaultRegistration().email(userEmail).build())
