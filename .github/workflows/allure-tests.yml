@@ -40,9 +40,10 @@ jobs:
             FILES_ARGS="${FILES_ARGS} -F files[]=@${file}"
           done
 
-          curl -X POST "${ALLURE_SERVER_URL}/send-results" \
-               $FILES_ARGS \
-               -F "project_id=${PROJECT_ID}"
+          # ВАЖНО: сначала передаём project_id, потом файлы
+          eval curl -X POST "${ALLURE_SERVER_URL}/send-results" \
+               -F "project_id=${PROJECT_ID}" \
+               $FILES_ARGS
 
           curl -X GET "${ALLURE_SERVER_URL}/generate-report?project_id=${PROJECT_ID}"
 
