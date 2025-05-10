@@ -54,4 +54,4 @@ jobs:
       - name: Show Allure report URL
         if: always()
         run: |
-          echo "Allure report available at: ${ALLURE_SERVER_URL}/projects/${PROJECT_ID}/reports/latest/index.html"
+          echo "Allure report available at: ${ALLURE_SERVER_URL}/projects/default/reports/latest/index.html"
