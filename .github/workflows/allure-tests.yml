@@ -37,10 +37,9 @@ jobs:
         run: |
           curl -L -o allurectl https://github.com/allure-framework/allurectl/releases/latest/download/allurectl_linux_amd64
           chmod +x allurectl
-          ./allurectl upload \
-            --results=${ALLURE_RESULTS_DIR} \
-            --server-url=${ALLURE_SERVER_URL} \
-            --project-id=${PROJECT_ID}
+          ./allurectl upload ${ALLURE_RESULTS_DIR} \
+            --endpoint ${ALLURE_SERVER_URL} \
+            --project-id ${PROJECT_ID}
 
       - name: Show Allure report URL
         if: always()
