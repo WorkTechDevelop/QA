@@ -39,7 +39,8 @@ jobs:
           chmod +x allurectl
           ./allurectl upload ${ALLURE_RESULTS_DIR} \
             --endpoint ${ALLURE_SERVER_URL} \
-            --project-id ${PROJECT_ID}
+            --project-name ${PROJECT_ID}
+
 
       - name: Show Allure report URL
         if: always()
