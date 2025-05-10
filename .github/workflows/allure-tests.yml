@@ -28,6 +28,11 @@ jobs:
           chmod +x gradlew
           ./gradlew clean test
 
+      - name: Debug test execution
+        run: |
+          chmod +x gradlew
+         ./gradlew test --info   
+
       - name: List Allure results directory
         run: ls -l build/allure-results
 

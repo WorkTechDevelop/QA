@@ -4,8 +4,8 @@ plugins {
 }
 
 java {
-    sourceCompatibility = 21
-    targetCompatibility = 21
+    sourceCompatibility = 17
+    targetCompatibility = 17
 }
 
 group = 'ru.worktech'
@@ -33,7 +33,7 @@ ext {
 dependencies {
     implementation "io.rest-assured:rest-assured:$restAssuredVersion"
     implementation "io.rest-assured:json-schema-validator:$restAssuredVersion"
-    implementation "io.qameta.allure:allure-testng:$allureVersion"
+    implementation "io.qameta.allure:allure-testng:2.24.0"
     implementation "io.qameta.allure:allure-selenide:$allureVersion"
     implementation "io.qameta.allure:allure-java-commons:$allureVersion"
     compileOnly "org.projectlombok:lombok:$lombokVersion"
