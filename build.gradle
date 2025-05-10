@@ -24,7 +24,7 @@ ext {
     lombokVersion = '1.18.36'
     ownerVersion = '1.0.12'
     hamcrestVersion = '3.0'
-    allureVersion = '2.20.1'
+    allureVersion = '2.25.0'
     log4jVersion = '2.23.1'
     jacksonVersion = '2.15.2'
     mySQLVersion = '9.3.0'
@@ -35,18 +35,17 @@ dependencies {
     implementation "io.rest-assured:json-schema-validator:$restAssuredVersion"
     implementation "io.qameta.allure:allure-testng:$allureVersion"
     implementation "io.qameta.allure:allure-selenide:$allureVersion"
-    implementation "io.qameta.allure:allure-commandline:$allureVersion"
-    implementation "io.qameta.allure:allure-assertj:$allureVersion"
-    implementation "io.qameta.allure:allure-rest-assured:$allureVersion"
     implementation "io.qameta.allure:allure-java-commons:$allureVersion"
-    testImplementation "org.testng:testng:$testngVersion"
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "org.aeonbits.owner:owner:$ownerVersion"
-    implementation "org.hamcrest:hamcrest:$hamcrestVersion"
     implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
     implementation "com.mysql:mysql-connector-j:$mySQLVersion"
+    testImplementation "io.qameta.allure:allure-assertj:$allureVersion"
+    testImplementation "io.qameta.allure:allure-rest-assured:$allureVersion"
+    testImplementation "org.hamcrest:hamcrest:$hamcrestVersion"
+    testImplementation "org.testng:testng:$testngVersion"
 }
 
 allure {
@@ -57,8 +56,7 @@ allure {
 }
 
 test {
-    useTestNG()
-    testLogging {
-        events "passed", "skipped", "failed"
+    useTestNG {
+        suites 'src/test/resources/testng.xml'
     }
 }
