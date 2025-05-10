@@ -28,6 +28,9 @@ jobs:
           chmod +x gradlew
           ./gradlew clean test
 
+      - name: List Allure results directory
+        run: ls -l build/allure-results
+
       - name: Zip Allure results
         run: |
           sudo apt-get update && sudo apt-get install -y zip
