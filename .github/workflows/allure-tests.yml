@@ -28,10 +28,6 @@ jobs:
       - name: Run tests with Gradle
         run: ./gradlew clean test
 
-      - name: Debug test execution
-        if: always()
-        run: ./gradlew test --info
-
       - name: List Allure results directory
         if: always()
         run: ls -l ${ALLURE_RESULTS_DIR}
@@ -49,7 +45,6 @@ jobs:
           curl -X GET "${ALLURE_SERVER_URL}/generate-report?project_id=${PROJECT_ID}"
 
       - name: Show Allure report URL
-    if: always()
-  run: |
-    echo "Allure report available at: ${ALLURE_SERVER_URL}/projects/${PROJECT_ID}/reports/latest/index.html"
-
+        if: always()
+        run: |
+          echo "Allure report available at: ${ALLURE_SERVER_URL}/projects/${PROJECT_ID}/reports/latest/index.html"
