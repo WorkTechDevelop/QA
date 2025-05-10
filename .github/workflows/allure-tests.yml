@@ -32,17 +32,15 @@ jobs:
         if: always()
         run: ls -l ${ALLURE_RESULTS_DIR}
 
-      - name: Upload Allure results to Allure Docker Service
+      - name: Upload Allure results using allurectl
         if: always()
         run: |
-          for file in $(find ${ALLURE_RESULTS_DIR} -type f); do
-            echo "Uploading $file"
-            curl -X POST "${ALLURE_SERVER_URL}/send-results" \
-                 -F "files[]=@${file}" \
-                 -F "project_id=${PROJECT_ID}"
-          done
-
-          curl -X GET "${ALLURE_SERVER_URL}/generate-report?project_id=${PROJECT_ID}"
+          curl -L -o allurectl https://github.com/allure-framework/allurectl/releases/latest/download/allurectl_linux_amd64
+          chmod +x allurectl
+          ./allurectl upload \
+            --results=${ALLURE_RESULTS_DIR} \
+            --server-url=${ALLURE_SERVER_URL} \
+            --project-id=${PROJECT_ID}
 
       - name: Show Allure report URL
         if: always()
