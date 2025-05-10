@@ -56,7 +56,10 @@ allure {
 }
 
 test {
-    useTestNG {
-        suites 'src/test/resources/testng.xml'
+    useTestNG()
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
     }
+    outputs.upToDateWhen { false }
 }
