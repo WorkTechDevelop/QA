@@ -22,29 +22,34 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Grant execute permissions to Gradle wrapper
+        run: chmod +x ./gradlew
+
       - name: Run tests with Gradle
-        continue-on-error: true
-        run: |
-          chmod +x gradlew
-          ./gradlew clean test
+        run: ./gradlew clean test
 
       - name: Debug test execution
-        run: |
-          chmod +x gradlew
-         ./gradlew test --info   
+        if: always()
+        run: ./gradlew test --info
 
       - name: List Allure results directory
-        run: ls -l build/allure-results
-
-      - name: Zip Allure results
-        run: |
-          sudo apt-get update && sudo apt-get install -y zip
-          zip -r allure-results.zip build/allure-results
+        if: always()
+        run: ls -l ${ALLURE_RESULTS_DIR}
 
       - name: Upload Allure results to Allure Docker Service
+        if: always()
         run: |
-          curl -X POST "${ALLURE_SERVER_URL}/send-results" \
-               -F "results=@allure-results.zip" \
-               -F "project_id=${PROJECT_ID}"
+          for file in $(find ${ALLURE_RESULTS_DIR} -type f); do
+            echo "Uploading $file"
+            curl -X POST "${ALLURE_SERVER_URL}/send-results" \
+                 -F "files[]=@${file}" \
+                 -F "project_id=${PROJECT_ID}"
+          done
 
           curl -X GET "${ALLURE_SERVER_URL}/generate-report?project_id=${PROJECT_ID}"
+
+      - name: Show Allure report URL
+    if: always()
+  run: |
+    echo "Allure report available at: ${ALLURE_SERVER_URL}/projects/${PROJECT_ID}/reports/latest/index.html"
+
