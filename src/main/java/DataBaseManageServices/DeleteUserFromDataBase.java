@@ -1,4 +1,4 @@
-package ru.worktech.services;
+package DataBaseManageServices;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +8,7 @@ import static java.lang.System.out;
 import static java.sql.DriverManager.getConnection;
 
 @SuppressWarnings("CallToPrintStackTrace")
-public class DataBaseManageService {
+public class DeleteUserFromDataBase {
 
     private static final String URL = "jdbc:mysql://91.211.249.37:32500/wt_backend_test";
     private static final String USER = "backend_test";

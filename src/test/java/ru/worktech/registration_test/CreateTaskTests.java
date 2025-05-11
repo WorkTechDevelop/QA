@@ -35,6 +35,5 @@ public class CreateTaskTests {
                 .sprintId("6c17g1c0-5j7f-49vy-ay1a-m98766c6t91")
                 .taskType("BUG")
                 .estimation("5");
-
     }
 }

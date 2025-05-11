@@ -4,6 +4,7 @@ import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.worktech.core.AssertableResponse;
 import ru.worktech.models.CreateTaskRequest;
+import ru.worktech.models.UpdateTaskRequest;
 import ru.worktech.services.TaskService;
 
 public class TaskSteps {
@@ -17,7 +18,7 @@ public class TaskSteps {
     }
 
     @Step("Обновить задачу")
-    public AssertableResponse editTask(CreateTaskRequest request) {
+    public AssertableResponse editTask(UpdateTaskRequest request) {
         Response response = taskService.editTask(request);
         return new AssertableResponse(response);
     }

@@ -2,7 +2,7 @@ package ru.worktech.registration_test;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import ru.worktech.services.DataBaseManageService;
+import DataBaseManageServices.DeleteUserFromDataBase;
 import ru.worktech.steps.UserSteps;
 
 import static org.apache.http.HttpStatus.*;
@@ -13,7 +13,7 @@ import static ru.worktech.services.TestDataGenerator.generateEmail;
 public class RegistrationTests {
 
     private final UserSteps userSteps = new UserSteps();
-    private final DataBaseManageService dbManage = new DataBaseManageService();
+    private final DeleteUserFromDataBase dbManage = new DeleteUserFromDataBase();
     private String userEmail;
 
     @AfterMethod
