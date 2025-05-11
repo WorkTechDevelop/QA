@@ -6,35 +6,52 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.worktech.models.UpdateTaskRequest;
 import ru.worktech.steps.TaskSteps;
-
-import static org.apache.http.HttpStatus.SC_CREATED;
+import testDataGenerator.TaskTitleGenerator;
 
 public class UpdateTaskTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
-    CreateTaskTests createTaskForTest = new CreateTaskTests();
     DeleteTaskFromDataBase deleterTask = new DeleteTaskFromDataBase();
 
+    private String generatedTitle = TaskTitleGenerator.generateTaskTitle();
+    private String createdTaskId;
+
     @BeforeMethod
-    public void successfulCreateTaskForUpdateTest() {
-    createTaskForTest.successfulCreateTask();
+    public void setup() {
+        generatedTitle = TaskTitleGenerator.generateTaskTitle();
+        createdTaskId = taskSteps.createTask(
+                TaskSteps.getDefaultCreateTask()
+                        .title(generatedTitle)
+                        .build()
+        ).extractTaskId();
     }
 
     @AfterMethod
-    public void deleteTaskFromDataBase() {
-    deleterTask.deleteTaskByTitle("TestEntity123");
+    public void teardown() {
+        if (createdTaskId != null) {
+            deleterTask.deleteTaskByTaskId(createdTaskId);
+        }
     }
-
+    // TODO: СДЕЛАТЬ ENUMS ДЛЯ НЕКОТОРЫХ ПОЛЕЙ И ПРОПИСАТЬ ВАЛИДНЫЕ ПОЛЯ ДЛЯ ЗАПРОСА
     @Test
     public void testSuccessfulUpdateTask() {
         taskSteps.editTask(getDefaultUpdateTask()
+                        .taskId(createdTaskId)
+                        .title(generatedTitle + "_updated")
+                        .description("Обновленное описание")
+                        .priority("HIGH")
+                        .assignee("user123")
+                        .sprintId("sprint-456")
+                        .estimation(5)
+                        .code("")
+                        .status("OPEN")
                         .build())
-                .checkStatusCode(SC_CREATED);
+                .checkStatusCode(200);
     }
 
     private UpdateTaskRequest.UpdateTaskRequestBuilder getDefaultUpdateTask() {
         return UpdateTaskRequest.builder()
-                .taskId("123")
+                .taskId("")
                 .title("TestEntity123")
                 .description("Correct")
                 .priority("HIGH")

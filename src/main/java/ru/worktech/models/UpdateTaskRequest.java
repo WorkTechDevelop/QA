@@ -13,9 +13,10 @@ public class UpdateTaskRequest {
     private String assignee;
     private String sprintId;
     private int estimation;
+    private String code;
     private String status; // ДОБАВИТЬ ENUM
 
-    public UpdateTaskRequest(String taskId, String title, String description, String priority, String assignee, String sprintId, int estimation, String status) {
+    public UpdateTaskRequest(String taskId, String title, String description, String priority, String assignee, String sprintId, int estimation, String code, String status) {
         this.taskId = taskId;
         this.title = title;
         this.description = description;
@@ -23,6 +24,7 @@ public class UpdateTaskRequest {
         this.assignee = assignee;
         this.sprintId = sprintId;
         this.estimation = estimation;
+        this.code = code;
         this.status = status;
     }
 }

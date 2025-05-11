@@ -12,19 +12,19 @@ public class DeleteTaskFromDataBase {
     private static final String USER = "backend_test";
     private static final String PASSWORD = "d2343&^2dsjsds";
 
-    public void deleteTaskByTitle(String title) {
-        String sqlCommandForDeleteTask = "DELETE FROM users WHERE title = ?"; // TODO: ПРОВЕРИТЬ КОРРЕКТНОСТЬ НАЗВАНИЯ ПОЛЕЙ ТАБЛИЦЫ
+    public void deleteTaskByTaskId(String taskId) {
+        String sqlCommandForDeleteTask = "DELETE FROM task_model WHERE id = ?"; // TODO: ПРОВЕРИТЬ КОРРЕКТНОСТЬ НАЗВАНИЯ ПОЛЕЙ ТАБЛИЦЫ
 
         try (Connection connection = getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = connection.prepareStatement(sqlCommandForDeleteTask)) {
 
-            stmt.setString(1, title);
+            stmt.setString(1, taskId);
             int rowsAffected = stmt.executeUpdate();
 
             if (rowsAffected > 0) {
-                out.println("Задача с названием \"" + title + "\" успешно удалена.");
+                out.println("Задача с названием \"" + taskId + "\" успешно удалена.");
             } else {
-                out.println(" Задача с названием \"" + title + "\" не найдена.");
+                out.println(" Задача с названием \"" + taskId + "\" не найдена.");
             }
 
         } catch (SQLException e) {

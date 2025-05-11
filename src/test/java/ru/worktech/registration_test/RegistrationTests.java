@@ -8,7 +8,7 @@ import ru.worktech.steps.UserSteps;
 import static org.apache.http.HttpStatus.*;
 import static ru.worktech.models.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.RegistrationRequest.builder;
-import static ru.worktech.services.TestDataGenerator.generateEmail;
+import static testDataGenerator.EmailGenerator.generateEmail;
 
 public class RegistrationTests {
 

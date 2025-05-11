@@ -21,4 +21,8 @@ public class AssertableResponse {
         response.then().body(field, equalTo(value));
         return this;
     }
+
+    public String extractTaskId() {
+        return response.jsonPath().getString("taskId");
+    }
 }

@@ -22,4 +22,16 @@ public class TaskSteps {
         Response response = taskService.editTask(request);
         return new AssertableResponse(response);
     }
+
+    public static CreateTaskRequest.CreateTaskRequestBuilder getDefaultCreateTask() {
+        return CreateTaskRequest.builder()
+                .title("TestEntity")
+                .description("Correct")
+                .assignee("830c1f1a-1a10-4a77-b8c0-81d25747bb2f")
+                .priority("HIGH")
+                .projectId("project-id-929")
+                .sprintId("6c17g1c0-5j7f-49vy-ay1a-m98766c6t91")
+                .taskType("BUG")
+                .estimation("5");
+    }
 }
