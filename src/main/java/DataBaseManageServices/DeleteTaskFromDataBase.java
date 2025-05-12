@@ -13,7 +13,7 @@ public class DeleteTaskFromDataBase {
     private static final String PASSWORD = "d2343&^2dsjsds";
 
     public void deleteTaskByTaskId(String taskId) {
-        String sqlCommandForDeleteTask = "DELETE FROM task_model WHERE id = ?"; // TODO: ПРОВЕРИТЬ КОРРЕКТНОСТЬ НАЗВАНИЯ ПОЛЕЙ ТАБЛИЦЫ
+        String sqlCommandForDeleteTask = "DELETE FROM task_model WHERE id = ?";
 
         try (Connection connection = getConnection(URL, USER, PASSWORD);
              PreparedStatement stmt = connection.prepareStatement(sqlCommandForDeleteTask)) {

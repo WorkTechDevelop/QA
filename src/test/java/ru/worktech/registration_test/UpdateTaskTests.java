@@ -5,59 +5,51 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.worktech.models.UpdateTaskRequest;
+import ru.worktech.models.CreatedTaskData;
 import ru.worktech.steps.TaskSteps;
-import testDataGenerator.TaskTitleGenerator;
+
+import static org.apache.http.HttpStatus.SC_OK;
 
 public class UpdateTaskTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
-    DeleteTaskFromDataBase deleterTask = new DeleteTaskFromDataBase();
+    private final DeleteTaskFromDataBase deleterTask = new DeleteTaskFromDataBase();
 
-    private String generatedTitle = TaskTitleGenerator.generateTaskTitle();
-    private String createdTaskId;
+    private CreatedTaskData createdTaskData;
 
     @BeforeMethod
     public void setup() {
-        generatedTitle = TaskTitleGenerator.generateTaskTitle();
-        createdTaskId = taskSteps.createTask(
+        createdTaskData = taskSteps.createTask(
                 TaskSteps.getDefaultCreateTask()
-                        .title(generatedTitle)
+                        .title("Test" + System.currentTimeMillis())
+                        .priority("MEDIUM")
                         .build()
-        ).extractTaskId();
+        ).extractAllTaskData();
     }
 
     @AfterMethod
     public void teardown() {
-        if (createdTaskId != null) {
-            deleterTask.deleteTaskByTaskId(createdTaskId);
+        if (createdTaskData != null && createdTaskData.getTaskId() != null) {
+            deleterTask.deleteTaskByTaskId(createdTaskData.getTaskId());
         }
     }
-    // TODO: СДЕЛАТЬ ENUMS ДЛЯ НЕКОТОРЫХ ПОЛЕЙ И ПРОПИСАТЬ ВАЛИДНЫЕ ПОЛЯ ДЛЯ ЗАПРОСА
+
     @Test
     public void testSuccessfulUpdateTask() {
-        taskSteps.editTask(getDefaultUpdateTask()
-                        .taskId(createdTaskId)
-                        .title(generatedTitle + "_updated")
-                        .description("Обновленное описание")
-                        .priority("HIGH")
-                        .assignee("user123")
-                        .sprintId("sprint-456")
-                        .estimation(5)
-                        .code("")
-                        .status("OPEN")
-                        .build())
-                .checkStatusCode(200);
-    }
-
-    private UpdateTaskRequest.UpdateTaskRequestBuilder getDefaultUpdateTask() {
-        return UpdateTaskRequest.builder()
-                .taskId("")
-                .title("TestEntity123")
-                .description("Correct")
-                .priority("HIGH")
-                .assignee("user123")
-                .sprintId("sprint-456")
-                .estimation(5)
-                .status("OPEN");
+        taskSteps.editTask(
+                UpdateTaskRequest.builder()
+                        .taskId(createdTaskData.getTaskId())
+                        .title(createdTaskData.getTitle() + "_updated")
+                        .description(createdTaskData.getDescription())
+                        .priority(createdTaskData.getPriority())
+                        .assignee(createdTaskData.getAssignee())
+                        .sprintId(createdTaskData.getSprintId())
+                        .projectId(createdTaskData.getProjectId())
+                        .taskType(createdTaskData.getTaskType())
+                        .estimation(createdTaskData.getEstimation())
+                        .code(createdTaskData.getCode())
+                        .status(createdTaskData.getStatus())
+                        .build()
+        ).checkStatusCode(SC_OK);
     }
 }
