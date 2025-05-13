@@ -21,7 +21,7 @@ public class UpdateTaskStatusTests {
 
     private UpdateTaskStatusRequestBuilder getUpdateTaskStatus() {
         return builder()
-                .status("DONE")
+                .status("TODO")
                 .code("TPO-0016");
     }
 }
