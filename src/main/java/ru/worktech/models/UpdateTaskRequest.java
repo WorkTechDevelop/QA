@@ -9,13 +9,13 @@ import lombok.Data;
 @Data
 @Builder
 public class UpdateTaskRequest {
-    private String taskId;
+    private String id;
     private String title;
     private String description;
     private TaskPriority priority;
     private String assignee;
     private String sprintId;
-    private int estimation;
+    private Integer estimation;
     private String projectId;
     private TaskType taskType;
     private String code;

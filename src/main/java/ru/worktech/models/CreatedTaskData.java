@@ -13,13 +13,23 @@ public class CreatedTaskData {
     private final String projectId;
     private final String sprintId;
     private final TaskType taskType;
-    private final int estimation;
+    private final Integer estimation;
     private final String code;
     private final TaskStatus status;
 
-    public CreatedTaskData(String taskId, String title, String description, String assignee, TaskPriority priority,
-                           String projectId, String sprintId, TaskType taskType, int estimation, String code,
-                           TaskStatus status) {
+    public CreatedTaskData(
+            String taskId,
+            String title,
+            String description,
+            String assignee,
+            TaskPriority priority,
+            String projectId,
+            String sprintId,
+            TaskType taskType,
+            Integer estimation,
+            String code,
+            TaskStatus status
+    ) {
         this.taskId = taskId;
         this.title = title;
         this.description = description;
@@ -65,7 +75,7 @@ public class CreatedTaskData {
         return taskType;
     }
 
-    public int getEstimation() {
+    public Integer getEstimation() {
         return estimation;
     }
 

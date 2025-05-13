@@ -31,18 +31,50 @@ public class AssertableResponse {
     }
 
     public CreatedTaskData extractAllTaskData() {
+        String taskId = response.jsonPath().getString("taskId");
+        String title = response.jsonPath().getString("title");
+        String description = response.jsonPath().getString("description");
+        String assignee = response.jsonPath().getString("assignee");
+
+        String priorityStr = response.jsonPath().getString("priority");
+        TaskPriority priority = TaskPriority.valueOfSafe(priorityStr);
+
+        String sprintId = response.jsonPath().getString("sprintId");
+        String projectId = response.jsonPath().getString("projectId");
+
+        String taskTypeStr = response.jsonPath().getString("taskType");
+        TaskType taskType = TaskType.valueOfSafe(taskTypeStr);
+
+        String estimationStr = response.jsonPath().getString("estimation");
+        Integer estimation = parseIntSafe(estimationStr);
+
+        String code = response.jsonPath().getString("code");
+        String statusStr = response.jsonPath().getString("status");
+        TaskStatus status = TaskStatus.valueOfSafe(statusStr);
+
         return new CreatedTaskData(
-                response.jsonPath().getString("taskId"),
-                response.jsonPath().getString("title"),
-                response.jsonPath().getString("description"),
-                response.jsonPath().getString("assignee"),
-                TaskPriority.valueOf(response.jsonPath().getString("priority")),
-                response.jsonPath().getString("sprintId"),
-                response.jsonPath().getString("projectId"),
-                TaskType.valueOf(response.jsonPath().getString("taskType")),
-                Integer.parseInt(response.jsonPath().getString("estimation")),
-                response.jsonPath().getString("code"),
-                TaskStatus.valueOf(response.jsonPath().getString("status"))
+                taskId,
+                title,
+                description,
+                assignee,
+                priority,
+                projectId,
+                sprintId,
+                taskType,
+                estimation,
+                code,
+                status
         );
+    }
+
+    private Integer parseIntSafe(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 }
