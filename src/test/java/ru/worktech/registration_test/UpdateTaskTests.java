@@ -63,4 +63,52 @@ public class UpdateTaskTests {
                         .build()
         ).checkStatusCode(200);
     }
+
+    @Test
+    public void testUpdateWithMinLengthTitle() {
+        CreatedTaskData original = createdTaskData;
+
+        taskSteps.editTask(
+                UpdateTaskRequest.builder()
+                        .id(original.getTaskId())
+                        .title("a")
+                        .description("Updated description")
+                        .priority(validPriority)
+                        .assignee(validAssignee)
+                        .sprintId(original.getSprintId())
+                        .projectId(validProjectId)
+                        .taskType(validTaskType)
+                        .estimation(original.getEstimation())
+                        .code(validCode)
+                        .status(validStatus)
+                        .build()
+        ).checkStatusCode(200);
+    }
+
+    @Test
+    public void testUpdateWithoutDutyFields() {
+        CreatedTaskData original = createdTaskData;
+        // TODO: ПРОВЕРИТЬ КАКИЕ ПОЛЯ ЯВЛЯЮТСЯ ОБЯЗАТЕЛЬНЫМИ В АКТУАЛЬНОЙ АНАЛИТИКЕ
+
+        taskSteps.editTask(
+                UpdateTaskRequest.builder()
+                        .id(null)
+                        .title(original.getTitle() + "_updated")
+                        .description("Updated description")
+                        .priority(null)
+                        .assignee(null)
+                        .sprintId(original.getSprintId())
+                        .projectId(validProjectId)
+                        .taskType(null)
+                        .estimation(original.getEstimation())
+                        .code(validCode)
+                        .status(validStatus)
+                        .build()
+        ).checkStatusCode(200);
+    }
+
+    @Test
+    public void testUpdateTaskWithoutAuth() {
+
+    }
 }
