@@ -9,7 +9,7 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
 import static ru.worktech.models.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.RegistrationRequest.builder;
-import static ru.worktech.services.TestDataGenerator.generateEmail;
+import static ru.worktech.services.TestDataGenerator.generateRandomEmail;
 
 public class RegistrationTests {
 
@@ -26,7 +26,7 @@ public class RegistrationTests {
 
     @Test(testName = "TK-311-1- Успешная регистрации нового пользователя ")
     public void testRegistrationSuccessRegistration() {
-        userEmail = generateEmail();
+        userEmail = generateRandomEmail();
         userSteps.registerUser(getDefaultRegistration().email(userEmail).build())
                 .checkStatusCode(SC_OK);
     }

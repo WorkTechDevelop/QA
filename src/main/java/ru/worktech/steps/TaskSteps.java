@@ -25,7 +25,7 @@ public class TaskSteps {
 
     @Step("Обновить статус задачи")
     public AssertableResponse updateTaskStatusStep(UpdateTaskStatusRequest request) {
-        Response response = taskService.updateTask(request);
+        Response response = taskService.editTask(request);
         return new AssertableResponse(response);
     }
 }
