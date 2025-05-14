@@ -12,13 +12,14 @@ public class AuthorizationTests {
 
     private final UserSteps userSteps = new UserSteps();
 
-    @Test
+
+    @Test(testName = "TK-311-1-Успешная авторизация")
     public void testSuccessfulAuthorization() {
         userSteps.loginUser(getDefaultAuthorization().build())
                 .checkStatusCode(SC_OK);
     }
 
-    @Test
+    @Test(testName = "TK-311-2-Авторизация без Email")
     public void testAuthorizationWithoutEmail() {
         userSteps.loginUser(
                         builder()
@@ -28,7 +29,7 @@ public class AuthorizationTests {
                 .checkStatusCode(SC_UNAUTHORIZED);
     }
 
-    @Test
+    @Test(testName = "TK-311-3-Авторизация без пароля")
     public void testAuthorizationWithoutPassword() {
         userSteps.loginUser(
                         builder()
@@ -38,7 +39,7 @@ public class AuthorizationTests {
                 .checkStatusCode(SC_BAD_REQUEST);
     }
 
-    @Test
+    @Test(testName = "TK-311-4-Авторизация без Email и пароля")
     public void testAuthorizationWithEmptyData() {
         userSteps.loginUser(
                         builder()
@@ -48,7 +49,7 @@ public class AuthorizationTests {
                 .checkStatusCode(SC_UNAUTHORIZED);
     }
 
-    @Test
+    @Test(testName = "TK-311-6-Авторизация с некоректным Email (без @)")
     public void testAuthorizationWithIncorrectEmail() {
         userSteps.loginUser(
                         builder()
@@ -58,7 +59,7 @@ public class AuthorizationTests {
                 .checkStatusCode(SC_UNAUTHORIZED);
     }
 
-    @Test
+    @Test(testName = "TK-311-7-Авторизация c пробелами перед и после Email")
     public void testAuthorizationWithSpacesBeforeAndAfterEmail() {
         userSteps.loginUser(
                         builder()
@@ -68,7 +69,7 @@ public class AuthorizationTests {
                 .checkStatusCode(SC_UNAUTHORIZED);
     }
 
-    @Test
+    @Test(testName = "TK-311-8-Авторизация незаригестрированного пользователя")
     public void testAuthorizationNotExistUser() {
         userSteps.loginUser(
                         builder()

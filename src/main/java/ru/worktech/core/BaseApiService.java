@@ -4,6 +4,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import lombok.Setter;
 import org.aeonbits.owner.ConfigFactory;
 import ru.worktech.config.ApiConfig;
 import ru.worktech.models.AuthorizationRequest;
@@ -16,12 +17,18 @@ public abstract class BaseApiService {
 
     protected static final ApiConfig config = ConfigFactory.create(ApiConfig.class);
     private static String authToken;
+    @Setter
+    private  static boolean ignoreAuth = false;
 
     static {
         registerParser("text/plain", Parser.JSON);
     }
 
+
     protected static String getAuthToken() {
+        if(ignoreAuth) {
+            return null;
+        }
         if (authToken == null) {
             authToken = fetchNewToken();
         }
@@ -34,6 +41,7 @@ public abstract class BaseApiService {
                 .baseUri(config.baseUrl())
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + getAuthToken());
+
     }
 
     private static String fetchNewToken() {
