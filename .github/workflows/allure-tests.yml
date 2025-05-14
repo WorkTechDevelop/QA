@@ -1,0 +1,57 @@
+name: Run Tests and Upload Allure Report
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-and-upload:
+    runs-on: ubuntu-latest
+
+    env:
+      ALLURE_RESULTS_DIR: build/allure-results
+      ALLURE_SERVER_URL: http://91.211.249.37:30355
+      PROJECT_ID: work-task-autotests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Grant execute permissions to Gradle wrapper
+        run: chmod +x ./gradlew
+
+      - name: Run tests with Gradle
+        run: ./gradlew clean test
+
+      - name: List Allure results directory
+        if: always()
+        run: ls -l ${ALLURE_RESULTS_DIR}
+
+      - name: Upload Allure results to Allure Docker Service
+        if: always()
+        run: |
+          echo "Uploading results to project: ${PROJECT_ID}"
+          FILES_ARGS=""
+          for file in $(find ${ALLURE_RESULTS_DIR} -type f); do
+            FILES_ARGS="${FILES_ARGS} -F files[]=@${file}"
+          done
+
+          # Debug output
+          echo "Sending files to: ${ALLURE_SERVER_URL}/send-results"
+          eval curl -v -X POST "${ALLURE_SERVER_URL}/send-results" \
+               -F "project_id=${PROJECT_ID}" \
+               $FILES_ARGS
+
+          # Проверка генерации отчета
+          curl -v -X GET "${ALLURE_SERVER_URL}/generate-report?project_id=${PROJECT_ID}"
+
+
+      - name: Show Allure report URL
+        if: always()
+        run: |
+          echo "Allure report available at: ${ALLURE_SERVER_URL}/projects/default/reports/latest/index.html"

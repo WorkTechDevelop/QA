@@ -1,10 +1,11 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 java {
-    sourceCompatibility = 21
-    targetCompatibility = 21
+    sourceCompatibility = 17
+    targetCompatibility = 17
 }
 
 group = 'ru.worktech'
@@ -23,7 +24,7 @@ ext {
     lombokVersion = '1.18.36'
     ownerVersion = '1.0.12'
     hamcrestVersion = '3.0'
-    allureVersion = '2.20.1'
+    allureVersion = '2.25.0'
     log4jVersion = '2.23.1'
     jacksonVersion = '2.15.2'
     mySQLVersion = '9.3.0'
@@ -32,22 +33,33 @@ ext {
 dependencies {
     implementation "io.rest-assured:rest-assured:$restAssuredVersion"
     implementation "io.rest-assured:json-schema-validator:$restAssuredVersion"
-    implementation "io.qameta.allure:allure-testng:$allureVersion"
+    implementation "io.qameta.allure:allure-testng:2.24.0"
     implementation "io.qameta.allure:allure-selenide:$allureVersion"
-    implementation "io.qameta.allure:allure-commandline:$allureVersion"
-    implementation "io.qameta.allure:allure-assertj:$allureVersion"
-    implementation "io.qameta.allure:allure-rest-assured:$allureVersion"
     implementation "io.qameta.allure:allure-java-commons:$allureVersion"
-    testImplementation "org.testng:testng:$testngVersion"
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
     implementation "org.aeonbits.owner:owner:$ownerVersion"
-    implementation "org.hamcrest:hamcrest:$hamcrestVersion"
     implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
     implementation "com.mysql:mysql-connector-j:$mySQLVersion"
+    testImplementation "io.qameta.allure:allure-assertj:$allureVersion"
+    testImplementation "io.qameta.allure:allure-rest-assured:$allureVersion"
+    testImplementation "org.hamcrest:hamcrest:$hamcrestVersion"
+    testImplementation "org.testng:testng:$testngVersion"
+}
+
+allure {
+    version = '2.25.0'
+    useTestNG {
+        version = '2.25.0'
+    }
 }
 
 test {
     useTestNG()
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
+    outputs.upToDateWhen { false }
 }
