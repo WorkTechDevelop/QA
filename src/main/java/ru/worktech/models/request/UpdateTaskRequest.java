@@ -1,4 +1,4 @@
-package ru.worktech.models;
+package ru.worktech.models.request;
 
 import enums.TaskPriority;
 import enums.TaskStatus;
