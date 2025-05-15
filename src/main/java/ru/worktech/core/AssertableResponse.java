@@ -4,9 +4,7 @@ import enums.TaskPriority;
 import enums.TaskStatus;
 import enums.TaskType;
 import io.restassured.response.Response;
-import ru.worktech.models.CreatedTaskData;
-
-import static org.hamcrest.Matchers.equalTo;
+import ru.worktech.models.response.GetTaskByTaskCodeResponse;
 
 public class AssertableResponse {
 
@@ -16,21 +14,11 @@ public class AssertableResponse {
         this.response = response;
     }
 
-    public AssertableResponse checkStatusCode(int statusCode) {
+    public void checkStatusCode(int statusCode) {
         response.then().statusCode(statusCode);
-        return this;
     }
 
-    public AssertableResponse checkBodyFieldEquals(String field, Object value) {
-        response.then().body(field, equalTo(value));
-        return this;
-    }
-
-    public String extractTaskId() {
-        return response.jsonPath().getString("taskId");
-    }
-
-    public CreatedTaskData extractAllTaskData() {
+    public GetTaskByTaskCodeResponse extractAllTaskData() {
         String taskId = response.jsonPath().getString("taskId");
         String title = response.jsonPath().getString("title");
         String description = response.jsonPath().getString("description");
@@ -52,18 +40,18 @@ public class AssertableResponse {
         String statusStr = response.jsonPath().getString("status");
         TaskStatus status = TaskStatus.valueOfSafe(statusStr);
 
-        return new CreatedTaskData(
+        return new GetTaskByTaskCodeResponse(
                 taskId,
                 title,
                 description,
-                assignee,
                 priority,
+                assignee,
                 projectId,
                 sprintId,
                 taskType,
                 estimation,
-                code,
-                status
+                status,
+                code
         );
     }
 
