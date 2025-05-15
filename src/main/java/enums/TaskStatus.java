@@ -1,7 +1,7 @@
 package enums;
 
 public enum TaskStatus {
-    TODO, IN_PROGRESS, DONE;
+    TODO, IN_PROGRESS, REVIEW, DONE;
 
     public static TaskStatus valueOfSafe(String name) {
         if (name == null || name.isEmpty()) {
