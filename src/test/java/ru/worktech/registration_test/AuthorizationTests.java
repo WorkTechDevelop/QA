@@ -5,8 +5,8 @@ import ru.worktech.steps.UserSteps;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.http.HttpStatus.*;
-import static ru.worktech.models.AuthorizationRequest.AuthorizationRequestBuilder;
-import static ru.worktech.models.AuthorizationRequest.builder;
+import static ru.worktech.models.request.AuthorizationRequest.AuthorizationRequestBuilder;
+import static ru.worktech.models.request.AuthorizationRequest.builder;
 
 public class AuthorizationTests {
 
