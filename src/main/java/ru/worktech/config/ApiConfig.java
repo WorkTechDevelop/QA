@@ -4,14 +4,12 @@ import org.aeonbits.owner.Config;
 
 @Config.Sources("classpath:project_config.property")
 public interface ApiConfig extends Config {
-
-    @Config.Key("baseUrl")
+    @Key("api.baseUrl")
     String baseUrl();
 
-    @Config.Key("username")
+    @Key("api.username")
     String username();
 
-    @Config.Key("password")
+    @Key("api.password")
     String password();
-
 }
