@@ -1,4 +1,4 @@
-package ru.worktech.models;
+package ru.worktech.models.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +14,10 @@ public class CreateTaskRequest {
     private String projectId;
     private String sprintId;
     private String taskType;
-    private String estimation;
+    private Integer estimation;
 
-    public CreateTaskRequest(String title, String description, String assignee, String priority, String projectId, String sprintId, String taskType, String estimation) {
+    public CreateTaskRequest(String title, String description, String assignee, String priority, String projectId,
+                             String sprintId, String taskType, Integer estimation) {
         this.title = title;
         this.description = description;
         this.assignee = assignee;

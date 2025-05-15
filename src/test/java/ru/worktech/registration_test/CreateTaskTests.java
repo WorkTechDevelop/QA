@@ -5,8 +5,8 @@ import ru.worktech.core.BaseApiService;
 import ru.worktech.steps.TaskSteps;
 
 import static org.apache.http.HttpStatus.*;
-import static ru.worktech.models.CreateTaskRequest.CreateTaskRequestBuilder;
-import static ru.worktech.models.CreateTaskRequest.builder;
+import static ru.worktech.models.request.CreateTaskRequest.CreateTaskRequestBuilder;
+import static ru.worktech.models.request.CreateTaskRequest.builder;
 
 public class CreateTaskTests {
 
@@ -128,7 +128,7 @@ public class CreateTaskTests {
     @Test(testName = "TK-32-15-Создание задачи с отрицательным значением (ESTIMATION)")
     public void testCreateTaskFailWithNegativeEstimation() {
         taskSteps.createTask(getDefaultCreateTask()
-                        .estimation("-1")
+                        .estimation(-1)
                         .build())
                 .checkStatusCode(SC_BAD_REQUEST);
     }
@@ -163,6 +163,6 @@ public class CreateTaskTests {
                 .projectId("project-id-929")
                 .sprintId("6c17g1c0-5j7f-49vy-ay1a-m98766c6t91")
                 .taskType("BUG")
-                .estimation("5");
+                .estimation(5);
     }
 }

@@ -3,8 +3,8 @@ package ru.worktech.steps;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.worktech.core.AssertableResponse;
-import ru.worktech.models.AuthorizationRequest;
-import ru.worktech.models.RegistrationRequest;
+import ru.worktech.models.request.AuthorizationRequest;
+import ru.worktech.models.request.RegistrationRequest;
 import ru.worktech.services.UserService;
 
 public class UserSteps {
