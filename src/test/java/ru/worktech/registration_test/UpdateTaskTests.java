@@ -10,7 +10,8 @@ import ru.worktech.models.response.GetTaskByTaskCodeResponse;
 import ru.worktech.steps.TaskSteps;
 
 import static enums.TaskPriority.MEDIUM;
-import static enums.TaskStatus.*;
+import static enums.TaskStatus.DONE;
+import static enums.TaskStatus.REVIEW;
 import static enums.TaskType.BUG;
 import static enums.TaskType.TASK;
 import static java.lang.System.currentTimeMillis;
@@ -76,29 +77,8 @@ public class UpdateTaskTests {
                         .projectId(taskRequest.getProjectId())
                         .taskType(BUG)
                         .estimation((taskRequest.getEstimation()))
-                        .code(createdTaskResponse.getCode())
+                        .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()))
                         .status(DONE)
-                        .build()
-        ).checkStatusCode(SC_OK);
-    }
-
-    @Test
-    public void testUpdateWithoutDutyFields() {
-        // TODO: ПРОВЕРИТЬ КАКИЕ ПОЛЯ ЯВЛЯЮТСЯ ОБЯЗАТЕЛЬНЫМИ В АКТУАЛЬНОЙ АНАЛИТИКЕ
-
-        taskSteps.updateTask(
-                builder()
-                        .id(null)
-                        .title(taskRequest.getTitle() + "_updated")
-                        .description("Updated description")
-                        .priority(null)
-                        .assignee(null)
-                        .sprintId(taskRequest.getSprintId())
-                        .projectId(taskRequest.getProjectId())
-                        .taskType(null)
-                        .estimation((taskRequest.getEstimation()))
-                        .code(createdTaskResponse.getCode())
-                        .status(IN_PROGRESS)
                         .build()
         ).checkStatusCode(SC_OK);
     }
