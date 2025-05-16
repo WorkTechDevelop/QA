@@ -2,25 +2,25 @@ package ru.worktech.registration_test;
 
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import ru.worktech.services.DataBaseManageService;
+import DataBaseManageServices.query.DeleteUserFromDataBase;
 import ru.worktech.steps.UserSteps;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
-import static ru.worktech.models.RegistrationRequest.RegistrationRequestBuilder;
-import static ru.worktech.models.RegistrationRequest.builder;
-import static ru.worktech.services.TestDataGenerator.generateEmail;
+import static ru.worktech.models.request.RegistrationRequest.RegistrationRequestBuilder;
+import static ru.worktech.models.request.RegistrationRequest.builder;
+import static testDataGenerator.EmailGenerator.generateEmail;
 
 public class RegistrationTests {
 
     private final UserSteps userSteps = new UserSteps();
-    private final DataBaseManageService dbManage = new DataBaseManageService();
+    private final DeleteUserFromDataBase dbManage = new DeleteUserFromDataBase();
     private String userEmail;
 
     @AfterMethod
     public void deleteUserFromDataBase() {
         if (userEmail != null) {
-            dbManage.deleteUser(userEmail);
+            dbManage.deleteUserByEmail(userEmail);
         }
     }
 
