@@ -4,6 +4,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import ru.worktech.core.BaseApiService;
 import ru.worktech.models.CreateTaskRequest;
+import ru.worktech.models.UpdateTaskStatusRequest;
 
 import static ru.worktech.endpoints.Endpoints.CREATE_TASK_ENDPOINT;
 import static ru.worktech.endpoints.Endpoints.EDITE_TASK_ENDPOINT;
