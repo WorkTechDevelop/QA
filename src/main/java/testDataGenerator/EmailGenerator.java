@@ -1,9 +1,9 @@
-package ru.worktech.services;
+package testDataGenerator;
 
 import static java.lang.System.*;
 import static java.util.UUID.randomUUID;
 
-public class TestDataGenerator {
+public class EmailGenerator {
 
     public static String generateRandomEmail() {
         return "testUser" + currentTimeMillis() + "@example.com";
