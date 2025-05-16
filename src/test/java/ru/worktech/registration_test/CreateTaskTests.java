@@ -150,10 +150,6 @@ public class CreateTaskTests {
         BaseApiService.setIgnoreAuth(false);
     }
 
-    @Test(testName = "TK-32-18-Создание задачи с повторяющимися ключами json")
-    public void createTaskWithDuplicateJsonKeys() {
-    }
-
     private CreateTaskRequestBuilder getDefaultCreateTask() {
         return builder()
                 .title("TestEntity")
