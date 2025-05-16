@@ -37,10 +37,10 @@ public class TaskSteps {
         return builder()
                 .title("TestEntity")
                 .description("Correct")
-                .assignee("830c1f1a-1a10-4a77-b8c0-81d25747bb2f")
+                .assignee("a4069488-7d8f-40bc-80e1-025322316901")
                 .priority("HIGH")
-                .projectId("project-id-929")
-                .sprintId("6c17g1c0-5j7f-49vy-ay1a-m98766c6t91")
+                .projectId("project-123")
+                .sprintId("0001")
                 .taskType("BUG")
                 .estimation(5);
     }

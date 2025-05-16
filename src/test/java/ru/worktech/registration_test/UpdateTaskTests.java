@@ -76,7 +76,7 @@ public class UpdateTaskTests {
                         .projectId(taskRequest.getProjectId())
                         .taskType(BUG)
                         .estimation((taskRequest.getEstimation()))
-                        .code(createdTaskResponse.getCode())
+                        .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()))
                         .status(DONE)
                         .build()
         ).checkStatusCode(SC_OK);
