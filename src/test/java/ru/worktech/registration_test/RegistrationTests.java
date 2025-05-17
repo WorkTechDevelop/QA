@@ -3,6 +3,7 @@ package ru.worktech.registration_test;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import DataBaseManageServices.query.DeleteUserFromDataBase;
+import ru.worktech.models.request.RegistrationRequest;
 import ru.worktech.steps.UserSteps;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
@@ -59,7 +60,7 @@ public class RegistrationTests {
     @Test(testName = "TK-311-5-Проверка регистрации пользователя с несовпадающими паролями при подтверждении")
     public void testRegistrationFailUserWithMismatchedPasswords() {
         userSteps.registerUser(getDefaultRegistration().password("defaultPassword123")
-                        .confirmPassword("defaultPassword12").build()).checkStatusCode(SC_BAD_REQUEST);
+                .confirmPassword("defaultPassword12").build()).checkStatusCode(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-6-Проверка Email без \"@\"")
@@ -78,6 +79,23 @@ public class RegistrationTests {
     public void testRegistrationFailSpecialSymbol() {
         userSteps.registerUser(getDefaultRegistration().email("testdEmail*mail.ru").build())
                 .checkStatusCode(SC_BAD_REQUEST);
+    }
+
+    @Test(testName = "ТК-311-10-Поле middleName не является обязательным")
+    public void testRegistrationMiddleNameNotRequired() {
+        RegistrationRequest request = RegistrationRequest.builder()
+                .lastName("defaultLastName")
+                .firstName("defaultFirstName")
+                .email("ivanov" + System.currentTimeMillis() + "@example.com")
+                .password("StrongPassword123!")
+                .middleName(null)
+                .phone("+79123456789")
+                .birthDate("01.01.1990")
+                .gender("MALE")
+                .build();
+
+        userSteps.registerUser(request)
+                .checkStatusCode(SC_OK);
     }
 
     private RegistrationRequestBuilder getDefaultRegistration() {
