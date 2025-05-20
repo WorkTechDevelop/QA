@@ -18,12 +18,12 @@ public class RegistrationTests {
     private final DeleteUserFromDataBase dbManage = new DeleteUserFromDataBase();
     private String userEmail;
 
-    @AfterMethod
-    public void deleteUserFromDataBase() {
-        if (userEmail != null) {
-            dbManage.deleteUserByEmail(userEmail);
-        }
-    }
+//    @AfterMethod
+//    public void deleteUserFromDataBase() {
+//        if (userEmail != null) {
+//            dbManage.deleteUserByEmail(userEmail);
+//        }
+//    }
 
     @Test(testName = "TK-311-1- Успешная регистрации нового пользователя ")
     public void testRegistrationSuccessRegistration() {
@@ -83,15 +83,14 @@ public class RegistrationTests {
 
     @Test(testName = "ТК-311-10-Поле middleName не является обязательным")
     public void testRegistrationMiddleNameNotRequired() {
-        RegistrationRequest request = RegistrationRequest.builder()
-                .lastName("defaultLastName")
+        userEmail = generateEmail();
+        RegistrationRequest request = getDefaultRegistration()
+                .lastName(userEmail)
                 .firstName("defaultFirstName")
                 .email("ivanov" + System.currentTimeMillis() + "@example.com")
                 .password("StrongPassword123!")
+                .confirmPassword("StrongPassword123!")
                 .middleName(null)
-                .phone("+79123456789")
-                .birthDate("01.01.1990")
-                .gender("MALE")
                 .build();
 
         userSteps.registerUser(request)
@@ -100,7 +99,7 @@ public class RegistrationTests {
 
     private RegistrationRequestBuilder getDefaultRegistration() {
         return builder()
-                .email("default@gmail.com")
+                .email("default@.com")
                 .password("defaultPassword")
                 .confirmPassword("defaultPassword")
                 .lastName("defaultLastName")
