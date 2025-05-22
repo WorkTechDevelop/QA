@@ -1,4 +1,4 @@
-package ru.worktech.registration_test;
+package ru.worktech.tests;
 
 import DataBaseManageServices.query.DeleteTaskFromDataBase;
 import DataBaseManageServices.query.GetTaskCodeById;

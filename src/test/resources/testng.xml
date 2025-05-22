@@ -2,7 +2,7 @@
 <suite name="All Test Suite">
     <test name="Regression">
         <packages>
-            <package name="ru.worktech.registration_test"/>
+            <package name="ru.worktech.tests"/>
         </packages>
     </test>
 </suite>

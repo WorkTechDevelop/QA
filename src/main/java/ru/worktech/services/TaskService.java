@@ -19,11 +19,11 @@ public class TaskService extends BaseApiService {
         return getSpec(request).put(EDITE_TASK_ENDPOINT.getAddress());
     }
 
-        public Response getTaskByTaskCode(String taskCode) {
-            return getRequestSpec()
-                    .when()
-                    .get(GET_TASK_BY_ID_ENDPOINT.resolve(taskCode));
-        }
+    public Response getTaskByTaskCode(String taskCode) {
+        return getRequestSpec()
+                .when()
+                .get(GET_TASK_BY_ID_ENDPOINT.resolve(taskCode));
+    }
 
     private RequestSpecification getSpec(CreateTaskRequest request) {
         return getRequestSpec()

@@ -1,4 +1,4 @@
-package ru.worktech.registration_test;
+package ru.worktech.tests;
 
 import org.testng.annotations.Test;
 import ru.worktech.steps.UserSteps;
