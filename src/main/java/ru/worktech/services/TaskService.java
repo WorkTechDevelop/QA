@@ -3,6 +3,7 @@ package ru.worktech.services;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import ru.worktech.core.BaseApiService;
+import ru.worktech.models.UpdateTaskStatusRequest;
 import ru.worktech.models.request.CreateTaskRequest;
 import ru.worktech.models.request.UpdateTaskRequest;
 
@@ -19,11 +20,9 @@ public class TaskService extends BaseApiService {
         return getSpec(request).put(EDITE_TASK_ENDPOINT.getAddress());
     }
 
-        public Response getTaskByTaskCode(String taskCode) {
-            return getRequestSpec()
-                    .when()
-                    .get(GET_TASK_BY_ID_ENDPOINT.resolve(taskCode));
-        }
+    public Response updateTaskStatus (UpdateTaskStatusRequest request) {
+        return getSpec(request).put(UPDATE_TASK_STATUS.getAddress());
+    }
 
     private RequestSpecification getSpec(CreateTaskRequest request) {
         return getRequestSpec()
@@ -32,6 +31,12 @@ public class TaskService extends BaseApiService {
     }
 
     private RequestSpecification getSpec(UpdateTaskRequest request) {
+        return getRequestSpec()
+                .body(request)
+                .when();
+    }
+
+    private RequestSpecification getSpec(UpdateTaskStatusRequest request) {
         return getRequestSpec()
                 .body(request)
                 .when();

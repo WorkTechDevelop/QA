@@ -1,6 +1,7 @@
 package ru.worktech.endpoints;
 
 import lombok.Getter;
+import ru.worktech.models.UpdateTaskStatusRequest;
 
 import static java.lang.String.format;
 
@@ -11,7 +12,8 @@ public enum ApiEndpoints {
     AUTHORIZATION_ENDPOINT("/work-task/v1/login"),
     CREATE_TASK_ENDPOINT("/work-task/v1/task/create-task"),
     EDITE_TASK_ENDPOINT("/work-task/v1/task/update-task"),
-    GET_TASK_BY_ID_ENDPOINT("/work-task/v1/task/{{taskId}}");
+    GET_TASK_BY_ID_ENDPOINT("/work-task/v1/task/{{taskId}}"),
+    UPDATE_TASK_STATUS("/work-task/v1/task/update-status");
 
     private final String template;
 
