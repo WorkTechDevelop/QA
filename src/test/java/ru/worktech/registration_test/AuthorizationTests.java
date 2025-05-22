@@ -1,21 +1,26 @@
 package ru.worktech.registration_test;
 
 import org.testng.annotations.Test;
+import ru.worktech.config.ApiConfig;
 import ru.worktech.steps.UserSteps;
 
 import static java.util.UUID.randomUUID;
+import static org.aeonbits.owner.ConfigFactory.create;
 import static org.apache.http.HttpStatus.*;
-import static ru.worktech.models.request.AuthorizationRequest.AuthorizationRequestBuilder;
 import static ru.worktech.models.request.AuthorizationRequest.builder;
 
 public class AuthorizationTests {
 
     private final UserSteps userSteps = new UserSteps();
-
+    private static final ApiConfig config = create(ApiConfig.class);
 
     @Test(testName = "TK-311-1-Успешная авторизация")
     public void testSuccessfulAuthorization() {
-        userSteps.loginUser(getDefaultAuthorization().build())
+        userSteps.loginUser(
+                builder()
+                        .username(config.username())
+                        .password(config.password())
+                        .build())
                 .checkStatusCode(SC_OK);
     }
 
@@ -85,11 +90,5 @@ public class AuthorizationTests {
 
     private String generateRandomPassword() {
         return randomUUID().toString().substring(0, 10);
-    }
-
-    private AuthorizationRequestBuilder getDefaultAuthorization() {
-        return builder()
-                .username("default@gmail.com")
-                .password("defaultPassword");
     }
 }

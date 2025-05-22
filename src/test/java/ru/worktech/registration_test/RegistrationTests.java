@@ -1,8 +1,8 @@
 package ru.worktech.registration_test;
 
+import DataBaseManageServices.query.DeleteUserFromDataBase;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import DataBaseManageServices.query.DeleteUserFromDataBase;
 import ru.worktech.models.request.RegistrationRequest;
 import ru.worktech.steps.UserSteps;
 
@@ -10,7 +10,7 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
 import static ru.worktech.models.request.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.request.RegistrationRequest.builder;
-import static testDataGenerator.EmailGenerator.generateEmail;
+import static testDataGenerator.EmailGenerator.generateRandomEmail;
 
 public class RegistrationTests {
 
@@ -18,16 +18,16 @@ public class RegistrationTests {
     private final DeleteUserFromDataBase dbManage = new DeleteUserFromDataBase();
     private String userEmail;
 
-//    @AfterMethod
-//    public void deleteUserFromDataBase() {
-//        if (userEmail != null) {
-//            dbManage.deleteUserByEmail(userEmail);
-//        }
-//    }
+    @AfterMethod
+    public void deleteUserFromDataBase() {
+        if (userEmail != null) {
+            dbManage.deleteUserByEmail(userEmail);
+        }
+    }
 
     @Test(testName = "TK-311-1- Успешная регистрации нового пользователя ")
     public void testRegistrationSuccessRegistration() {
-        userEmail = generateEmail();
+        userEmail = generateRandomEmail();
         userSteps.registerUser(getDefaultRegistration().email(userEmail).build())
                 .checkStatusCode(SC_OK);
     }
@@ -83,7 +83,7 @@ public class RegistrationTests {
 
     @Test(testName = "ТК-311-10-Поле middleName не является обязательным")
     public void testRegistrationMiddleNameNotRequired() {
-        userEmail = generateEmail();
+        userEmail = generateRandomEmail();
         RegistrationRequest request = getDefaultRegistration()
                 .lastName(userEmail)
                 .firstName("defaultFirstName")

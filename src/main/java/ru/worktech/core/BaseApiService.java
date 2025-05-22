@@ -1,5 +1,6 @@
 package ru.worktech.core;
 
+import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -32,12 +33,14 @@ public abstract class BaseApiService {
     }
 
     protected RequestSpecification getRequestSpec() {
-        filters(new ResponseLoggingFilter());
         return given().log().all()
+                .filter(new ResponseLoggingFilter(LogDetail.ALL))
                 .baseUri(config.baseUrl())
                 .contentType("application/json")
                 .header("Authorization", "Bearer " + getAuthToken());
     }
+
+
 
     private static String fetchNewToken() {
         Response response = given()
