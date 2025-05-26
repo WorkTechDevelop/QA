@@ -18,6 +18,15 @@ public class AssertableResponse {
         response.then().statusCode(statusCode);
     }
 
+    public Response getRawResponse() {
+        return response;
+    }
+
+    public AssertableResponse assertStatus(int expectedStatusCode) {
+        response.then().statusCode(expectedStatusCode);
+        return this;
+    }
+
     public GetTaskByTaskCodeResponse extractAllTaskData() {
         String taskId = response.jsonPath().getString("taskId");
         String title = response.jsonPath().getString("title");

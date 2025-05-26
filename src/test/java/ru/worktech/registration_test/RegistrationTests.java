@@ -24,7 +24,7 @@ public class RegistrationTests {
         }
     }
 
-    @Test(testName = "TK-311-1- Успешная регистрации нового пользователя ")
+    @Test(testName = "TK-311-1-Успешная регистрации нового пользователя")
     public void testRegistrationSuccessRegistration() {
         userEmail = generateEmail();
         userSteps.registerUser(getDefaultRegistration().email(userEmail).build())

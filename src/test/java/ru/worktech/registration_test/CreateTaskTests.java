@@ -1,9 +1,9 @@
 package ru.worktech.registration_test;
-
+import DataBaseManageServices.query.DeleteTaskFromDataBase;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import ru.worktech.core.BaseApiService;
 import ru.worktech.steps.TaskSteps;
-
 import static org.apache.http.HttpStatus.*;
 import static ru.worktech.models.request.CreateTaskRequest.CreateTaskRequestBuilder;
 import static ru.worktech.models.request.CreateTaskRequest.builder;
@@ -11,46 +11,65 @@ import static ru.worktech.models.request.CreateTaskRequest.builder;
 public class CreateTaskTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
+    private final DeleteTaskFromDataBase deleteTaskFromDataBase = new DeleteTaskFromDataBase();
+    private static String taskId;
+
+    @AfterMethod
+    public void teardown() {
+        if (taskId != null) {
+            deleteTaskFromDataBase.deleteTaskByTaskId(taskId);
+        }
+    }
 
     @Test(testName = "TK-32-1-Создание новой задачи")
     public void testCreateTaskSuccess() {
-        taskSteps.createTask(getDefaultCreateTask()
-                        .build())
-                .checkStatusCode(SC_CREATED);
+        taskId = taskSteps.createTask(getDefaultCreateTask()
+                        .build()).assertStatus(SC_CREATED)
+                .extractAllTaskData()
+                .getTaskId();
+
     }
 
     @Test(testName = "TK-32-2-Создание задачи с минимальной длиной TITLE (1 символ)")
     public void testCreateTaskSuccessWithMinTitleLength() {
-        taskSteps.createTask(getDefaultCreateTask()
+       taskId = taskSteps.createTask(getDefaultCreateTask()
                         .title("T")
                         .build())
-                .checkStatusCode(SC_CREATED);
+               .assertStatus(SC_CREATED)
+               .extractAllTaskData()
+               .getTaskId();
+
     }
 
     @Test(testName = "TK-32-3-Создание задачи с максимальной длиной TITLE (255 символов)")
     public void testCreateTaskSuccessWithMaxTitleLength() {
-        taskSteps.createTask(getDefaultCreateTask()
+       taskId = taskSteps.createTask(getDefaultCreateTask()
                         .title("T".repeat(255))
-                        .build())
-                .checkStatusCode(SC_CREATED);
+                        .build()).assertStatus(SC_CREATED)
+               .extractAllTaskData()
+               .getTaskId();
     }
 
     @Test(testName = "TK-32-4-Cоздание задачи с максимальной длиной DESCRIPTION (4096 символов)")
     public void testCreateTaskSuccessWithMaxDescriptionLength() {
-        taskSteps.createTask(getDefaultCreateTask()
+        taskId = taskSteps.createTask(getDefaultCreateTask()
                         .description("C".repeat(4096))
                         .build())
-                .checkStatusCode(SC_CREATED);
+                .assertStatus(SC_CREATED)
+                .extractAllTaskData()
+                .getTaskId();
     }
 
     @Test(testName = "TK-32-5-Cоздание задачи без необязательных полей (DESCRIPTION, SPRINT_ID, ESTIMATION)")
     public void testCreateTaskSuccessWithoutOptionalFields() {
-        taskSteps.createTask(getDefaultCreateTask()
+        taskId = taskSteps.createTask(getDefaultCreateTask()
                         .description(null)
                         .sprintId(null)
                         .estimation(null)
                         .build())
-                .checkStatusCode(SC_CREATED);
+                .assertStatus(SC_CREATED)
+                .extractAllTaskData()
+                .getTaskId();
     }
 
     @Test(testName = "TK-32-6-Создание задачи без обязательного поля (TITLE)")
@@ -154,10 +173,10 @@ public class CreateTaskTests {
         return builder()
                 .title("TestEntity")
                 .description("Correct")
-                .assignee("830c1f1a-1a10-4a77-b8c0-81d25747bb2f")
+                .assignee("a4069488-7d8f-40bc-80e1-025322316901")
                 .priority("HIGH")
-                .projectId("project-id-929")
-                .sprintId("6c17g1c0-5j7f-49vy-ay1a-m98766c6t91")
+                .projectId("project-123")
+                .sprintId("0001")
                 .taskType("BUG")
                 .estimation(5);
     }
