@@ -2,8 +2,6 @@ package ru.worktech.endpoints;
 
 import lombok.Getter;
 
-import static java.lang.String.format;
-
 @Getter
 public enum ApiEndpoints {
 
