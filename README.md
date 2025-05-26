@@ -53,17 +53,15 @@
 │       │       ├── RegistrationTests.java    #
 │       │       └── UpdateTaskTests.java      #
 │       └── resources                         #
-│           ├──── META-INF.services           #
+│           ├── META-INF.services             #
 │           │     ├── ITestNGListener         #           
-│           └──── testng.xml                  #
+│           └── testng.xml                    #
 ├── .gitignore                                #
-├── .gitlab-ci.yml                            #
-├── Dockerfile                                #
-├── log4j2.xml                                #
-├── lombok.config                             #
-├── pom.xml                                   #
+├── .build.gradle                             #
+├── gradlew                                   #
+├── gradlew.bat                               #
 ├── README.md                                 #
-└── settings.xml                              #
+└── settings.gradle                           #
 ```
 
 ### Переменные окружения
