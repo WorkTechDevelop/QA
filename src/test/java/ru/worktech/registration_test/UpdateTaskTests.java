@@ -44,8 +44,8 @@ public class UpdateTaskTests {
         }
     }
 
-    @Test
-    public void testSuccessfulUpdateTask() {
+    @Test(testName = "TK-32-1-Успешное редактирование задачи с правильными данными")
+    public void testUpdateTaskSuccess() {
         taskSteps.updateTask(
                 builder()
                         .id(createdTaskResponse.getTaskId())
@@ -63,8 +63,8 @@ public class UpdateTaskTests {
         ).checkStatusCode(SC_OK);
     }
 
-    @Test
-    public void testUpdateWithMinLengthTitle() {
+    @Test(testName = "TK-32-2-Редактирование задачи с минимальной длиной TITLE (1 символ)")
+    public void testUpdateTaskWithMinLengthTitle() {
         taskSteps.updateTask(
                 builder()
                         .id(createdTaskResponse.getTaskId())
