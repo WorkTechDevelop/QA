@@ -1,9 +1,11 @@
 package ru.worktech.registration_test;
+
 import DataBaseManageServices.query.DeleteTaskFromDataBase;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import ru.worktech.core.BaseApiService;
 import ru.worktech.steps.TaskSteps;
+
 import static org.apache.http.HttpStatus.*;
 import static ru.worktech.models.request.CreateTaskRequest.CreateTaskRequestBuilder;
 import static ru.worktech.models.request.CreateTaskRequest.builder;
@@ -11,8 +13,8 @@ import static ru.worktech.models.request.CreateTaskRequest.builder;
 public class CreateTaskTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
-    private final DeleteTaskFromDataBase deleteTaskFromDataBase = new DeleteTaskFromDataBase();
-    private static String taskId;
+    DeleteTaskFromDataBase deleteTaskFromDataBase = new DeleteTaskFromDataBase();
+    String taskId;
 
     @AfterMethod
     public void teardown() {
@@ -32,22 +34,22 @@ public class CreateTaskTests {
 
     @Test(testName = "TK-32-2-Создание задачи с минимальной длиной TITLE (1 символ)")
     public void testCreateTaskSuccessWithMinTitleLength() {
-       taskId = taskSteps.createTask(getDefaultCreateTask()
+        taskId = taskSteps.createTask(getDefaultCreateTask()
                         .title("T")
                         .build())
-               .assertStatus(SC_CREATED)
-               .extractAllTaskData()
-               .getTaskId();
+                .assertStatus(SC_CREATED)
+                .extractAllTaskData()
+                .getTaskId();
 
     }
 
     @Test(testName = "TK-32-3-Создание задачи с максимальной длиной TITLE (255 символов)")
     public void testCreateTaskSuccessWithMaxTitleLength() {
-       taskId = taskSteps.createTask(getDefaultCreateTask()
+        taskId = taskSteps.createTask(getDefaultCreateTask()
                         .title("T".repeat(255))
                         .build()).assertStatus(SC_CREATED)
-               .extractAllTaskData()
-               .getTaskId();
+                .extractAllTaskData()
+                .getTaskId();
     }
 
     @Test(testName = "TK-32-4-Cоздание задачи с максимальной длиной DESCRIPTION (4096 символов)")
@@ -173,10 +175,10 @@ public class CreateTaskTests {
         return builder()
                 .title("TestEntity")
                 .description("Correct")
-                .assignee("a4069488-7d8f-40bc-80e1-025322316901")
+                .assignee("534357db-f8a4-49d4-9951-2f863ff53547")
                 .priority("HIGH")
                 .projectId("project-123")
-                .sprintId("0001")
+                .sprintId("")
                 .taskType("BUG")
                 .estimation(5);
     }
