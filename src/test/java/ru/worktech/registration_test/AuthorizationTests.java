@@ -14,13 +14,13 @@ public class AuthorizationTests {
 
 
     @Test(testName = "TK-311-1-Успешная авторизация")
-    public void testAuthorizationSuccess() {
+    public void testSuccessfulAuthorization() {
         userSteps.loginUser(getDefaultAuthorization().build())
                 .checkStatusCode(SC_OK);
     }
 
     @Test(testName = "TK-311-2-Авторизация без Email")
-    public void testAuthorizationFailWithoutEmail() {
+    public void testAuthorizationWithoutEmail() {
         userSteps.loginUser(
                         builder()
                                 .username(null)
@@ -30,7 +30,7 @@ public class AuthorizationTests {
     }
 
     @Test(testName = "TK-311-3-Авторизация без пароля")
-    public void testAuthorizationFailWithoutPassword() {
+    public void testAuthorizationWithoutPassword() {
         userSteps.loginUser(
                         builder()
                                 .username("default@gmail.com")
@@ -40,7 +40,7 @@ public class AuthorizationTests {
     }
 
     @Test(testName = "TK-311-4-Авторизация без Email и пароля")
-    public void testAuthorizationFailWithEmptyData() {
+    public void testAuthorizationWithEmptyData() {
         userSteps.loginUser(
                         builder()
                                 .username(null)
@@ -50,7 +50,7 @@ public class AuthorizationTests {
     }
 
     @Test(testName = "TK-311-6-Авторизация с некоректным Email (без @)")
-    public void testAuthorizationFailWithIncorrectEmail() {
+    public void testAuthorizationWithIncorrectEmail() {
         userSteps.loginUser(
                         builder()
                                 .username("default.gmail.com")
@@ -60,7 +60,7 @@ public class AuthorizationTests {
     }
 
     @Test(testName = "TK-311-7-Авторизация c пробелами перед и после Email")
-    public void testAuthorizationFailWithSpacesBeforeAndAfterEmail() {
+    public void testAuthorizationWithSpacesBeforeAndAfterEmail() {
         userSteps.loginUser(
                         builder()
                                 .username(" default@gmail.com ")
@@ -70,7 +70,7 @@ public class AuthorizationTests {
     }
 
     @Test(testName = "TK-311-8-Авторизация незаригестрированного пользователя")
-    public void testAuthorizationFailNotExistUser() {
+    public void testAuthorizationNotExistUser() {
         userSteps.loginUser(
                         builder()
                                 .username(generateRandomEmail())

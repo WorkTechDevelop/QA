@@ -1,15 +1,16 @@
 package ru.worktech.registration_test;
 
+import DataBaseManageServices.query.DeleteUserFromDataBase;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import DataBaseManageServices.query.DeleteUserFromDataBase;
+import ru.worktech.models.request.RegistrationRequest;
 import ru.worktech.steps.UserSteps;
 
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
 import static ru.worktech.models.request.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.request.RegistrationRequest.builder;
-import static testDataGenerator.EmailGenerator.generateEmail;
+import static testDataGenerator.EmailGenerator.generateRandomEmail;
 
 public class RegistrationTests {
 
@@ -26,7 +27,7 @@ public class RegistrationTests {
 
     @Test(testName = "TK-311-1-Успешная регистрации нового пользователя")
     public void testRegistrationSuccessRegistration() {
-        userEmail = generateEmail();
+        userEmail = generateRandomEmail();
         userSteps.registerUser(getDefaultRegistration().email(userEmail).build())
                 .checkStatusCode(SC_OK);
     }
@@ -59,7 +60,7 @@ public class RegistrationTests {
     @Test(testName = "TK-311-5-Проверка регистрации пользователя с несовпадающими паролями при подтверждении")
     public void testRegistrationFailUserWithMismatchedPasswords() {
         userSteps.registerUser(getDefaultRegistration().password("defaultPassword123")
-                        .confirmPassword("defaultPassword12").build()).checkStatusCode(SC_BAD_REQUEST);
+                .confirmPassword("defaultPassword12").build()).checkStatusCode(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-6-Проверка Email без \"@\"")
@@ -80,9 +81,25 @@ public class RegistrationTests {
                 .checkStatusCode(SC_BAD_REQUEST);
     }
 
+    @Test(testName = "ТК-311-10-Поле middleName не является обязательным")
+    public void testRegistrationMiddleNameNotRequired() {
+        userEmail = generateRandomEmail();
+        RegistrationRequest request = getDefaultRegistration()
+                .lastName(userEmail)
+                .firstName("defaultFirstName")
+                .email("ivanov" + System.currentTimeMillis() + "@example.com")
+                .password("StrongPassword123!")
+                .confirmPassword("StrongPassword123!")
+                .middleName(null)
+                .build();
+
+        userSteps.registerUser(request)
+                .checkStatusCode(SC_OK);
+    }
+
     private RegistrationRequestBuilder getDefaultRegistration() {
         return builder()
-                .email("default@gmail.com")
+                .email("default@.com")
                 .password("defaultPassword")
                 .confirmPassword("defaultPassword")
                 .lastName("defaultLastName")
