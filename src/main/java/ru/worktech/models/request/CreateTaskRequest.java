@@ -15,16 +15,4 @@ public class CreateTaskRequest {
     private String sprintId;
     private String taskType;
     private Integer estimation;
-
-    public CreateTaskRequest(String title, String description, String assignee, String priority, String projectId,
-                             String sprintId, String taskType, Integer estimation) {
-        this.title = title;
-        this.description = description;
-        this.assignee = assignee;
-        this.priority = priority;
-        this.projectId = projectId;
-        this.sprintId = sprintId;
-        this.taskType = taskType;
-        this.estimation = estimation;
-    }
 }
