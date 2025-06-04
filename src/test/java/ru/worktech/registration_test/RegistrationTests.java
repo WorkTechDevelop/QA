@@ -85,9 +85,9 @@ public class RegistrationTests {
     public void testRegistrationMiddleNameNotRequired() {
         userEmail = generateRandomEmail();
         RegistrationRequest request = getDefaultRegistration()
-                .lastName(userEmail)
+                .lastName("defaultname")
                 .firstName("defaultFirstName")
-                .email("ivanov" + System.currentTimeMillis() + "@example.com")
+                .email(userEmail)
                 .password("StrongPassword123!")
                 .confirmPassword("StrongPassword123!")
                 .middleName(null)
