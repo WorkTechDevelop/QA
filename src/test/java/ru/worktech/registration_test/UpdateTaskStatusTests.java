@@ -6,6 +6,7 @@ import DataBaseManageServices.query.GetTaskCodeById;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import ru.worktech.core.BaseApiService;
 import ru.worktech.models.UpdateTaskStatusRequest.UpdateTaskStatusRequestBuilder;
 import ru.worktech.models.request.CreateTaskRequest;
 import ru.worktech.models.response.GetTaskByTaskCodeResponse;
@@ -88,6 +89,7 @@ public class UpdateTaskStatusTests {
                         .status("TODO")
                         .build())
                 .checkStatusCode(SC_UNAUTHORIZED);
+        BaseApiService.setIgnoreAuth(false);
     }
 
     @Test(testName = "TK-34-6-Изменение status на несуществующий.")
