@@ -36,7 +36,7 @@ public class AuthorizationTests {
                                 .username("default@gmail.com")
                                 .password(null)
                                 .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .checkStatusCode(SC_UNAUTHORIZED);
     }
 
     @Test(testName = "TK-311-4-Авторизация без Email и пароля")
@@ -89,7 +89,7 @@ public class AuthorizationTests {
 
     private AuthorizationRequestBuilder getDefaultAuthorization() {
         return builder()
-                .username("default@gmail.com")
-                .password("defaultPassword");
+                .username("test@mail.ru")
+                .password("wasdwasd");
     }
 }
