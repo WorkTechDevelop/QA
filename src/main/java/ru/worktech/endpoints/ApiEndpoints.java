@@ -8,8 +8,8 @@ import static java.lang.String.format;
 @Getter
 public enum ApiEndpoints {
 
-    REGISTRATION_ENDPOINT("/work-task/v1/registry"),
-    AUTHORIZATION_ENDPOINT("/work-task/v1/login"),
+    REGISTRATION_ENDPOINT("/work-task/v1/registration/registry"),
+    AUTHORIZATION_ENDPOINT("/work-task/v1/auth/login"),
     CREATE_TASK_ENDPOINT("/work-task/v1/task/create-task"),
     EDITE_TASK_ENDPOINT("/work-task/v1/task/update-task"),
     GET_TASK_BY_ID_ENDPOINT("/work-task/v1/task/{{taskId}}"),
