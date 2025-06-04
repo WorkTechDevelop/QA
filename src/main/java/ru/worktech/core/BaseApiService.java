@@ -50,7 +50,7 @@ public abstract class BaseApiService {
                 .when()
                 .post(AUTHORIZATION_ENDPOINT.getAddress());
         if (response.getStatusCode() == SC_OK) {
-            return response.jsonPath().getString("jwtToken");
+            return response.jsonPath().getString("accessToken");
         } else {
             return null;
         }
