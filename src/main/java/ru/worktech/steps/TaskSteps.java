@@ -21,6 +21,12 @@ public class TaskSteps {
         return new AssertableResponse(response);
     }
 
+    @Step("Создать задачу без авторизации")
+    public AssertableResponse createTaskWithOutAuth(CreateTaskRequest request) {
+        Response response = taskService.createTaskWithoutAuth(request);
+        return new AssertableResponse(response);
+    }
+
     @Step("Обновить задачу")
     public AssertableResponse updateTask(UpdateTaskRequest request) {
         Response response = taskService.editTask(request);
@@ -30,6 +36,12 @@ public class TaskSteps {
     @Step("Обновить статус задачи")
     public AssertableResponse updateTaskStatus(UpdateTaskStatusRequest request) {
         Response response = taskService.updateTaskStatus(request);
+        return new AssertableResponse(response);
+    }
+
+    @Step("Обновить статус задачи")
+    public AssertableResponse updateTaskStatusWithOutAuth(UpdateTaskStatusRequest request) {
+        Response response = taskService.updateTaskStatusWithOutAuth(request);
         return new AssertableResponse(response);
     }
 

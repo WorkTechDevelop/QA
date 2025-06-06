@@ -16,4 +16,5 @@ public class RegistrationRequest {
     private String phone;
     private String birthDate;
     private String gender;
+
 }

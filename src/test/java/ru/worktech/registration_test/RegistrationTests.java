@@ -12,7 +12,7 @@ import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
 import static ru.worktech.models.request.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.request.RegistrationRequest.builder;
-import static testDataGenerator.testDataGenerator.generateRandomEmail;
+import static testDataGenerator.TestDataGenerator.generateRandomEmail;
 
 public class RegistrationTests {
 

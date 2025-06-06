@@ -15,4 +15,5 @@ public class CreateTaskRequest {
     private String sprintId;
     private String taskType;
     private Integer estimation;
+
 }
