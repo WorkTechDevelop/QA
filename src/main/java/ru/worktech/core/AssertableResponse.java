@@ -14,10 +14,6 @@ public class AssertableResponse {
         this.response = response;
     }
 
-    public void checkStatusCode(int statusCode) {
-        response.then().statusCode(statusCode);
-    }
-
     public Response getRawResponse() {
         return response;
     }
