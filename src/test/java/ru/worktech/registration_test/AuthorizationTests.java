@@ -8,8 +8,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static ru.worktech.models.request.AuthorizationRequest.AuthorizationRequestBuilder;
 import static ru.worktech.models.request.AuthorizationRequest.builder;
-import static testDataGenerator.testDataGenerator.generateRandomEmail;
-import static testDataGenerator.testDataGenerator.generateRandomPassword;
+import static testDataGenerator.TestDataGenerator.generateRandomEmail;
+import static testDataGenerator.TestDataGenerator.generateRandomPassword;
 
 public class AuthorizationTests {
 
