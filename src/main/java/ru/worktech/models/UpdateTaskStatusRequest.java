@@ -1,6 +1,5 @@
 package ru.worktech.models;
 
-
 import lombok.Builder;
 import lombok.Data;
 
