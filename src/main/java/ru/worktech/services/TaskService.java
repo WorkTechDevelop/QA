@@ -16,27 +16,28 @@ public class TaskService extends BaseApiService {
                 .post(CREATE_TASK_ENDPOINT.getAddress());
     }
 
+    public Response createTaskWithoutAuth(CreateTaskRequest request) {
+        return getSpec(request)
+                .header("Authorization", "")
+                .post(CREATE_TASK_ENDPOINT.getAddress());
+    }
+
     public Response editTask(UpdateTaskRequest request) {
         return getSpec(request).put(EDITE_TASK_ENDPOINT.getAddress());
     }
 
-    public Response updateTaskStatus (UpdateTaskStatusRequest request) {
+    public Response updateTaskStatus(UpdateTaskStatusRequest request) {
         return getSpec(request).put(UPDATE_TASK_STATUS.getAddress());
     }
 
-    private RequestSpecification getSpec(CreateTaskRequest request) {
-        return getRequestSpec()
-                .body(request)
-                .when();
+    public Response updateTaskStatusWithOutAuth(UpdateTaskStatusRequest request) {
+        return getSpec(request)
+                .header("Authorization", "")
+                .post(UPDATE_TASK_STATUS.getAddress());
+
     }
 
-    private RequestSpecification getSpec(UpdateTaskRequest request) {
-        return getRequestSpec()
-                .body(request)
-                .when();
-    }
-
-    private RequestSpecification getSpec(UpdateTaskStatusRequest request) {
+    private RequestSpecification getSpec(Object request) {
         return getRequestSpec()
                 .body(request)
                 .when();
