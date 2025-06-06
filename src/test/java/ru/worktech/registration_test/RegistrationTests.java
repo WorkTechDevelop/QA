@@ -6,11 +6,13 @@ import org.testng.annotations.Test;
 import ru.worktech.models.request.RegistrationRequest;
 import ru.worktech.steps.UserSteps;
 
+import java.util.Objects;
+
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
 import static ru.worktech.models.request.RegistrationRequest.RegistrationRequestBuilder;
 import static ru.worktech.models.request.RegistrationRequest.builder;
-import static testDataGenerator.EmailGenerator.generateRandomEmail;
+import static testDataGenerator.testDataGenerator.generateRandomEmail;
 
 public class RegistrationTests {
 
@@ -19,8 +21,8 @@ public class RegistrationTests {
     private String userEmail;
 
     @AfterMethod
-    public void deleteUserFromDataBase() {
-        if (userEmail != null) {
+    public void afterMethod() {
+        if (Objects.nonNull(userEmail)) {
             dbManage.deleteUserByEmail(userEmail);
         }
     }
@@ -29,56 +31,56 @@ public class RegistrationTests {
     public void testRegistrationSuccessRegistration() {
         userEmail = generateRandomEmail();
         userSteps.registerUser(getDefaultRegistration().email(userEmail).build())
-                .checkStatusCode(SC_OK);
+                .assertStatus(SC_OK);
     }
 
     @Test(testName = "TK-311-2-Проверка регистрации пользователя, который уже существует")
     public void testRegistrationFailExistedUser() {
         userSteps.registerUser(getDefaultRegistration().build());
         userSteps.registerUser(getDefaultRegistration().build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-?-")
     public void testRegistrationFailOnEmptyEmail() {
         userSteps.registerUser(getDefaultRegistration().email("").build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-3-Проверка email с пробелами")
     public void testRegistrationFailUserWithSpaces() {
         userSteps.registerUser(getDefaultRegistration().email(" default@gmail.com ").build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-4-Проверка минимальной длины пароля.")
     public void testRegistrationFailShortPassword() {
         userSteps.registerUser(getDefaultRegistration().password("Av1234").confirmPassword("Av1234").build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-5-Проверка регистрации пользователя с несовпадающими паролями при подтверждении")
     public void testRegistrationFailUserWithMismatchedPasswords() {
         userSteps.registerUser(getDefaultRegistration().password("defaultPassword123")
-                .confirmPassword("defaultPassword12").build()).checkStatusCode(SC_BAD_REQUEST);
+                .confirmPassword("defaultPassword12").build()).assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-6-Проверка Email без \"@\"")
     public void testRegistrationFailIncorrectEmail() {
         userSteps.registerUser(getDefaultRegistration().email("default.gmail.com").build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-7-Проверка email без доменной части")
     public void testRegistrationFailWithoutDomain() {
         userSteps.registerUser(getDefaultRegistration().email("default@ru").build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-311-8-Проверка email с недопустимыми символами")
     public void testRegistrationFailSpecialSymbol() {
         userSteps.registerUser(getDefaultRegistration().email("testdEmail*mail.ru").build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "ТК-311-10-Поле middleName не является обязательным")
@@ -94,7 +96,7 @@ public class RegistrationTests {
                 .build();
 
         userSteps.registerUser(request)
-                .checkStatusCode(SC_OK);
+                .assertStatus(SC_OK);
     }
 
     private RegistrationRequestBuilder getDefaultRegistration() {
