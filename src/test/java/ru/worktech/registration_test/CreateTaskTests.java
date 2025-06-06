@@ -3,8 +3,9 @@ package ru.worktech.registration_test;
 import DataBaseManageServices.query.DeleteTaskFromDataBase;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import ru.worktech.core.BaseApiService;
 import ru.worktech.steps.TaskSteps;
+
+import java.util.Objects;
 
 import static org.apache.http.HttpStatus.*;
 import static ru.worktech.models.request.CreateTaskRequest.CreateTaskRequestBuilder;
@@ -13,12 +14,12 @@ import static ru.worktech.models.request.CreateTaskRequest.builder;
 public class CreateTaskTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
-    DeleteTaskFromDataBase deleteTaskFromDataBase = new DeleteTaskFromDataBase();
-    String taskId;
+    private DeleteTaskFromDataBase deleteTaskFromDataBase = new DeleteTaskFromDataBase();
+    private String taskId;
 
     @AfterMethod
-    public void teardown() {
-        if (taskId != null) {
+    public void afterMethod() {
+        if (Objects.nonNull(taskId)) {
             deleteTaskFromDataBase.deleteTaskByTaskId(taskId);
         }
     }
@@ -79,7 +80,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .title(null)
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-7-Создание задачи без обязательного поля (PRIORITY)")
@@ -87,7 +88,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .priority(null)
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-8-Создание задачи с некоректным значением (PRIORITY)")
@@ -95,7 +96,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .priority("INVALID")
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-9-Создание задачи без обязательного поля (ASSIGNEE)")
@@ -103,7 +104,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .assignee(null)
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-10-Создание задачи с некоректным значением (ASSIGNEE)")
@@ -111,7 +112,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .assignee("INVALID")
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-11-Создание задачи без обязательного поля (PROJECT_ID)")
@@ -119,7 +120,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .projectId(null)
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-12-Создание задачи с некоректным значением (PROJECT_ID)")
@@ -127,7 +128,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .projectId("INVALID")
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-13-Создание задачи без обязательного поля (TASK_TYPE)")
@@ -135,7 +136,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .taskType(null)
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-14-Создание задачи с некоректным значением (TASK_TYPE)")
@@ -143,7 +144,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .taskType("INVALID")
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-15-Создание задачи с отрицательным значением (ESTIMATION)")
@@ -151,7 +152,7 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .estimation(-1)
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-16-Создание задачи с некоректным значением поля (SPRINT_ID)")
@@ -159,16 +160,14 @@ public class CreateTaskTests {
         taskSteps.createTask(getDefaultCreateTask()
                         .sprintId("INVALID")
                         .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+                .assertStatus(SC_BAD_REQUEST);
     }
 
     @Test(testName = "TK-32-17-Создание задачи неавторизованным пользователем")
     public void testCreateTaskFailUnauthenticated() {
-        BaseApiService.setIgnoreAuth(true);
-        taskSteps.createTask(getDefaultCreateTask()
+        taskSteps.createTaskWithOutAuth(getDefaultCreateTask()
                         .build())
-                .checkStatusCode(SC_UNAUTHORIZED);
-        BaseApiService.setIgnoreAuth(false);
+                .assertStatus(SC_UNAUTHORIZED);
     }
 
     private CreateTaskRequestBuilder getDefaultCreateTask() {
