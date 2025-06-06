@@ -60,7 +60,7 @@ public class UpdateTaskTests {
                         .code(taskCode)
                         .status(REVIEW)
                         .build()
-        ).checkStatusCode(SC_OK);
+        ).assertStatus(SC_OK);
     }
 
     @Test(testName = "TK-32-2-Редактирование задачи с минимальной длиной TITLE (1 символ)")
@@ -79,7 +79,7 @@ public class UpdateTaskTests {
                         .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()))
                         .status(DONE)
                         .build()
-        ).checkStatusCode(SC_OK);
+        ).assertStatus(SC_OK);
     }
 
     @Test
@@ -100,6 +100,6 @@ public class UpdateTaskTests {
                         .code(createdTaskResponse.getCode())
                         .status(IN_PROGRESS)
                         .build()
-        ).checkStatusCode(SC_OK);
+        ).assertStatus(SC_OK);
     }
 }
