@@ -1,6 +1,6 @@
 api.baseUrl=http://91.211.249.37/test
-api.username=test@mail.ru
-api.password=wasdwasd
+api.username=test3@mail.ru
+api.password=password12345
 
 db.url=jdbc:mysql://91.211.249.37:32500/wt_backend_test
 db.username=backend_test
