@@ -38,8 +38,16 @@ public abstract class BaseApiService {
                 .header("Authorization", "Bearer " + getAuthToken());
     }
 
+    protected RequestSpecification getRequestSpecWithOutAuth() {
+        return given().log().all()
+                .filter(new ResponseLoggingFilter(LogDetail.ALL))
+                .baseUri(config.baseUrl())
+                .contentType("application/json");
+    }
+
     private static String fetchNewToken() {
         Response response = given()
+                .filter(new ResponseLoggingFilter(LogDetail.ALL))
                 .baseUri(config.baseUrl())
                 .contentType("application/json")
                 .body(new AuthorizationRequest(config.username(), config.password()))
