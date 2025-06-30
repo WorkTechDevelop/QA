@@ -2,104 +2,72 @@ package ru.worktech.registration_test;
 
 import DataBaseManageServices.query.DeleteTaskFromDataBase;
 import DataBaseManageServices.query.GetTaskCodeById;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import enums.TaskPriority;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import ru.worktech.models.request.CreateTaskRequest;
-import ru.worktech.models.response.GetTaskByTaskCodeResponse;
+import ru.worktech.models.TaskDto;
 import ru.worktech.steps.TaskSteps;
 
-import static enums.TaskPriority.MEDIUM;
-import static enums.TaskStatus.*;
-import static enums.TaskType.BUG;
-import static enums.TaskType.TASK;
 import static java.lang.System.currentTimeMillis;
+import static java.util.Objects.nonNull;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
-import static ru.worktech.models.request.UpdateTaskRequest.builder;
-import static ru.worktech.steps.TaskSteps.getDefaultCreateTask;
+import static testDataGenerator.TestDataGenerator.getDefaultCreateTask;
+import static testDataGenerator.TestDataGenerator.getDefaultUpdateTask;
 
 public class UpdateTaskTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
     private final DeleteTaskFromDataBase deleterTask = new DeleteTaskFromDataBase();
-    private CreateTaskRequest taskRequest;
-    private GetTaskByTaskCodeResponse createdTaskResponse;
+    private TaskDto taskRequest;
+    private String createdTaskId;
     private final GetTaskCodeById getTaskCodeById = new GetTaskCodeById();
     private static String taskCode;
 
-    @BeforeMethod
+    @BeforeClass
     public void setup() {
         taskRequest = getDefaultCreateTask()
-                .title("Test" + currentTimeMillis())
-                .priority("MEDIUM")
-                .build();
-        createdTaskResponse = taskSteps.createTask(taskRequest).extractAllTaskData();
-        taskCode = getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId());
+                .setTitle("Test" + currentTimeMillis())
+                .setPriority(TaskPriority.LOW)
+        ;
+        createdTaskId = taskSteps.createTask(taskRequest).getStringByJsonPath("taskID");
+        taskCode = getTaskCodeById.getTaskCode(createdTaskId);
     }
 
-    @AfterMethod
-    public void teardown() {
-        if (createdTaskResponse != null && createdTaskResponse.getTaskId() != null) {
-            deleterTask.deleteTaskByTaskId(createdTaskResponse.getTaskId());
+    @AfterClass
+    public void tearDown() {
+        if (nonNull(createdTaskId)) {
+            deleterTask.deleteTaskByTaskId(createdTaskId);
         }
     }
 
     @Test(testName = "TK-32-1-Успешное редактирование задачи с правильными данными")
     public void testUpdateTaskSuccess() {
-        taskSteps.updateTask(
-                builder()
-                        .id(createdTaskResponse.getTaskId())
-                        .title(taskRequest.getTitle() + "_updated")
-                        .description("Updated description")
-                        .priority(MEDIUM)
-                        .assignee(taskRequest.getAssignee())
-                        .sprintId(taskRequest.getSprintId())
-                        .projectId(taskRequest.getProjectId())
-                        .taskType(TASK)
-                        .estimation(taskRequest.getEstimation())
-                        .code(taskCode)
-                        .status(REVIEW)
-                        .build()
-        ).assertStatus(SC_OK);
+        taskSteps.updateTask(getDefaultUpdateTask()
+                        .setTaskId(createdTaskId))
+                .assertStatus(SC_OK);
     }
 
     @Test(testName = "TK-32-2-Редактирование задачи с минимальной длиной TITLE (1 символ)")
     public void testUpdateTaskWithMinLengthTitle() {
-        taskSteps.updateTask(
-                builder()
-                        .id(createdTaskResponse.getTaskId())
-                        .title("a")
-                        .description("Updated description")
-                        .priority(MEDIUM)
-                        .assignee(taskRequest.getAssignee())
-                        .sprintId(taskRequest.getSprintId())
-                        .projectId(taskRequest.getProjectId())
-                        .taskType(BUG)
-                        .estimation((taskRequest.getEstimation()))
-                        .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()))
-                        .status(DONE)
-                        .build()
-        ).assertStatus(SC_OK);
+        var request = getDefaultUpdateTask()
+                .setTaskId(createdTaskId)
+                .setTitle("T");
+
+        taskSteps.updateTask(request)
+                .assertStatus(SC_OK);
     }
 
-    @Test
+    @Test(testName = "ТК-32-3-Редактирование задачи без обязательных полей")
     public void testUpdateWithoutDutyFields() {
-        // TODO: ПРОВЕРИТЬ КАКИЕ ПОЛЯ ЯВЛЯЮТСЯ ОБЯЗАТЕЛЬНЫМИ В АКТУАЛЬНОЙ АНАЛИТИКЕ
+        var request = getDefaultUpdateTask()
+                .setTaskId("")
+                .setTitle("")
+                .setPriority(TaskPriority.NULL)
+                .setAssignee("");
 
-        taskSteps.updateTask(
-                builder()
-                        .id(null)
-                        .title(taskRequest.getTitle() + "_updated")
-                        .description("Updated description")
-                        .priority(null)
-                        .assignee(null)
-                        .sprintId(taskRequest.getSprintId())
-                        .projectId(taskRequest.getProjectId())
-                        .taskType(null)
-                        .estimation((taskRequest.getEstimation()))
-                        .code(createdTaskResponse.getCode())
-                        .status(IN_PROGRESS)
-                        .build()
-        ).assertStatus(SC_OK);
+        taskSteps.updateTask(request)
+                .assertStatus(SC_BAD_REQUEST);
     }
 }
