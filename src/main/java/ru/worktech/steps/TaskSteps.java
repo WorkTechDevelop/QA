@@ -3,27 +3,37 @@ package ru.worktech.steps;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.worktech.core.AssertableResponse;
-import ru.worktech.models.UpdateTaskStatusRequest;
-import ru.worktech.models.request.CreateTaskRequest;
-import ru.worktech.models.request.CreateTaskRequest.CreateTaskRequestBuilder;
-import ru.worktech.models.request.UpdateTaskRequest;
+import ru.worktech.models.TaskDto;
+import ru.worktech.models.request.UpdateTaskStatusRequest;
 import ru.worktech.services.TaskService;
 
-import static ru.worktech.models.request.CreateTaskRequest.*;
+import java.util.Map;
 
 public class TaskSteps {
 
     private final TaskService taskService = new TaskService();
 
     @Step("Создать задачу")
-    public AssertableResponse createTask(CreateTaskRequest request) {
+    public AssertableResponse createTask(TaskDto request) {
         Response response = taskService.createTask(request);
         return new AssertableResponse(response);
     }
 
+    @Step("Создать задачу")
+    public AssertableResponse createTaskMap(Map<String, Object> taskMap) {
+        Response response = taskService.createTaskMap(taskMap);
+        return new AssertableResponse(response);
+    }
+
+    @Step("Создать задачу без авторизации")
+    public AssertableResponse createTaskWithOutAuth(TaskDto request) {
+        Response response = taskService.createTaskWithOutAuth(request);
+        return new AssertableResponse(response);
+    }
+
     @Step("Обновить задачу")
-    public AssertableResponse updateTask(UpdateTaskRequest request) {
-        Response response = taskService.editTask(request);
+    public AssertableResponse updateTask(TaskDto request) {
+        Response response = taskService.updateTask(request);
         return new AssertableResponse(response);
     }
 
@@ -33,15 +43,11 @@ public class TaskSteps {
         return new AssertableResponse(response);
     }
 
-    public static CreateTaskRequestBuilder getDefaultCreateTask() {
-        return builder()
-                .title("TestEntity")
-                .description("Correct")
-                .assignee("a4069488-7d8f-40bc-80e1-025322316901")
-                .priority("HIGH")
-                .projectId("project-123")
-                .sprintId("0001")
-                .taskType("BUG")
-                .estimation(5);
+    @Step("Обновить статус задачи")
+    public AssertableResponse updateTaskStatusWithOutAuth(UpdateTaskStatusRequest request) {
+        Response response = taskService.updateTaskStatusWithOutAuth(request);
+        return new AssertableResponse(response);
     }
+
+
 }

@@ -7,6 +7,8 @@ import ru.worktech.models.request.AuthorizationRequest;
 import ru.worktech.models.request.RegistrationRequest;
 import ru.worktech.services.UserService;
 
+import java.util.Map;
+
 public class UserSteps {
 
     private final UserService userService = new UserService();
@@ -14,6 +16,12 @@ public class UserSteps {
     @Step("зарегистрировать пользователя")
     public AssertableResponse registerUser(RegistrationRequest user) {
         Response response = userService.registerUser(user);
+        return new AssertableResponse(response);
+    }
+
+    @Step("зарегистрировать пользователя")
+    public AssertableResponse registerUserMap(Map<String, Object> registrationMap) {
+        Response response = userService.registerUser(registrationMap);
         return new AssertableResponse(response);
     }
 

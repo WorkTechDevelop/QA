@@ -1,17 +1,17 @@
 package ru.worktech.models.request;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
-@Builder
+@Accessors (chain = true)
 public class AuthorizationRequest {
 
-    public String username;
+    public String email;
     public String password;
 
-    public AuthorizationRequest(String username, String password) {
-        this.username = username;
+    public AuthorizationRequest(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 }

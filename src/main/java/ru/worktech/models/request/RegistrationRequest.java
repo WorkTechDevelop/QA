@@ -1,10 +1,10 @@
 package ru.worktech.models.request;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
-@Builder
+@Accessors (chain = true)
 public class RegistrationRequest {
 
     private String email;
@@ -17,16 +17,4 @@ public class RegistrationRequest {
     private String birthDate;
     private String gender;
 
-    public RegistrationRequest(String email, String password, String confirmPassword, String lastName, String firstName,
-                               String middleName, String phone, String birthDate, String gender) {
-        this.email = email;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.phone = phone;
-        this.birthDate = birthDate;
-        this.gender = gender;
-    }
 }

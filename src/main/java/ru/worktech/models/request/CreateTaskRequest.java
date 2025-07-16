@@ -1,30 +1,21 @@
 package ru.worktech.models.request;
 
-import lombok.Builder;
+import enums.TaskPriority;
+import enums.TaskType;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
-@Builder
+@Accessors(chain = true)
 public class CreateTaskRequest {
 
     private String title;
     private String description;
     private String assignee;
-    private String priority;
+    private TaskPriority priority;
     private String projectId;
     private String sprintId;
-    private String taskType;
+    private TaskType taskType;
     private Integer estimation;
 
-    public CreateTaskRequest(String title, String description, String assignee, String priority, String projectId,
-                             String sprintId, String taskType, Integer estimation) {
-        this.title = title;
-        this.description = description;
-        this.assignee = assignee;
-        this.priority = priority;
-        this.projectId = projectId;
-        this.sprintId = sprintId;
-        this.taskType = taskType;
-        this.estimation = estimation;
-    }
 }

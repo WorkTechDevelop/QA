@@ -1,7 +1,7 @@
-package DataBaseManageServices.connection;
+package database.connection;
 
-import DataBaseManageServices.config.DbConfig;
-import DataBaseManageServices.exception.MySqlException;
+import database.config.DbConfig;
+import database.exception.DbException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,18 +10,18 @@ import java.util.Properties;
 
 import static org.aeonbits.owner.ConfigFactory.create;
 
-public class DatabaseConnection {
+public class DbConnection {
 
     private static volatile Connection connection;
 
-    private DatabaseConnection() {}
+    private DbConnection() {}
 
     public static Connection getConnection() {
         DbConfig cfg = create(DbConfig.class);
 
         try {
             if (connection == null || connection.isClosed()) {
-                synchronized (DatabaseConnection.class) {
+                synchronized (DbConnection.class) {
                     if (connection == null || connection.isClosed()) {
                         Properties props = new Properties();
                         props.setProperty("user", cfg.username());
@@ -32,7 +32,7 @@ public class DatabaseConnection {
             }
             return connection;
         } catch (SQLException e) {
-            throw new MySqlException("Failed to establish DB connection", e);
+            throw new DbException("Failed to establish DB connection", e);
         }
     }
 }

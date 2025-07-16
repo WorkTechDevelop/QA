@@ -1,109 +1,81 @@
 package ru.worktech.registration_test;
 
 
-import DataBaseManageServices.query.DeleteTaskFromDataBase;
-import DataBaseManageServices.query.GetTaskCodeById;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import database.query.DeleteTask;
+import database.query.GetTaskCodeById;
+import enums.TaskPriority;
+import enums.TaskStatus;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ru.worktech.models.UpdateTaskStatusRequest.UpdateTaskStatusRequestBuilder;
-import ru.worktech.models.request.CreateTaskRequest;
-import ru.worktech.models.response.GetTaskByTaskCodeResponse;
 import ru.worktech.steps.TaskSteps;
 
 import static java.lang.System.currentTimeMillis;
-import static org.apache.http.HttpStatus.*;
-import static ru.worktech.models.UpdateTaskStatusRequest.builder;
-import static ru.worktech.steps.TaskSteps.getDefaultCreateTask;
+import static java.util.Objects.nonNull;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_OK;
+import static testDataGenerator.TestDataGenerator.getDefaultCreateTask;
+import static testDataGenerator.TestDataGenerator.getDefaultUpdateTaskStatus;
 
 
 public class UpdateTaskStatusTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
-    private final DeleteTaskFromDataBase deleterTask = new DeleteTaskFromDataBase();
-    private GetTaskByTaskCodeResponse createdTaskResponse;
+    private final DeleteTask deleterTask = new DeleteTask();
+    private String createdTaskId;
     private final GetTaskCodeById getTaskCodeById = new GetTaskCodeById();
 
-    @BeforeMethod
+    @BeforeClass
     public void setup() {
-        CreateTaskRequest taskRequest = getDefaultCreateTask()
-                .title("Test" + currentTimeMillis())
-                .priority("MEDIUM")
-                .build();
-        createdTaskResponse = taskSteps.createTask(taskRequest).extractAllTaskData();
+        var taskRequest = getDefaultCreateTask()
+                .setTitle("Test" + currentTimeMillis())
+                .setPriority(TaskPriority.LOW);
+        createdTaskId = taskSteps.createTask(taskRequest).getStringByJsonPath("id");
     }
 
-    @AfterMethod
-    public void teardown() {
-        if (createdTaskResponse != null && createdTaskResponse.getTaskId() != null) {
-            deleterTask.deleteTaskByTaskId(createdTaskResponse.getTaskId());
+    @AfterClass
+    public void tearDown() {
+        if (nonNull(createdTaskId)) {
+            deleterTask.deleteTaskByTaskId(createdTaskId);
         }
     }
 
     @Test(testName = "TK-34-1-Обновление статуса задачи с валидными данными.")
     public void testUpdatingTaskStatusSuccessWithValidData() {
-        taskSteps.updateTaskStatus(
-                getUpdateTaskStatus()
-                        .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()))
-                        .status("TODO")
-                        .build())
-                .checkStatusCode(SC_OK);
-    }
+        var request = getDefaultUpdateTaskStatus()
+                .setCode(getTaskCodeById.getTaskCode(createdTaskId));
 
-    @Test(testName = "TK-34-2-Обновление статуса задачи с пустым status")
-    public void testUpdatingTaskStatusFailWithEmptyStatus() {
-        taskSteps.updateTaskStatus(
-                getUpdateTaskStatus()
-                        .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()))
-                        .status("")
-                        .build())
-                .checkStatusCode(SC_BAD_REQUEST);
-    }
-
-    @Test(testName = "TK-34-3-Обновление статуса с пустым code")
-    public void testUpdatingTaskStatusSuccessWithEmptyCode() {
-        taskSteps.updateTaskStatus(
-                getUpdateTaskStatus()
-                        .code("")
-                        .status("POSTPONED")
-                        .build())
-                .checkStatusCode(SC_NOT_FOUND);
-    }
-
-    @Test(testName = "TK-34-4-Обновление статуса задачи с несуществующим code")
-    public void testUpdatingTaskStatusSuccessWithNonExistentCode() {
-        taskSteps.updateTaskStatus(
-                getUpdateTaskStatus()
-                        .code("AAA-0000")
-                        .status("TODO")
-                        .build())
-                .checkStatusCode(SC_NOT_FOUND);
+        taskSteps.updateTaskStatus(request)
+                .assertStatus(SC_OK);
     }
 
     @Test(testName = "TK-34-5-Обновление статуса задачи без авторизации.")
     public void testUpdatingTaskStatusSuccessWithoutAuthorization() {
-        taskSteps.updateTaskStatus(
-                getUpdateTaskStatus()
-                        .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()))
-                        .status("TODO")
-                        .build())
-                .checkStatusCode(SC_UNAUTHORIZED);
+        var request = getDefaultUpdateTaskStatus()
+                .setCode(getTaskCodeById.getTaskCode(createdTaskId))
+                .setStatus(1);
+
+        taskSteps.updateTaskStatusWithOutAuth(request)
+                .assertStatus(SC_BAD_REQUEST);
     }
 
-    @Test(testName = "TK-34-6-Изменение status на несуществующий.")
-    public void testChangingStatusFailToNonExistent() {
-        taskSteps.updateTaskStatus(
-                getUpdateTaskStatus()
-                        .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()))
-                        .status("INVALID")
-                        .build())
-                .checkStatusCode(SC_BAD_REQUEST);
+    @DataProvider(name = "dataProvider")
+    public Object[][] dataProvider() {
+        return new Object[][]{
+                {getTaskCodeById.getTaskCode(createdTaskId), null},
+                {null, 1},
+                {"AAA-0000", 1},
+        };
     }
 
+    @Test(testName = "ТК-34- Обновление статуса задачи с невалидными данными", dataProvider = "dataProvider")
+    public void testUpdateTaskStatusFail(String code, TaskStatus status) {
+        var request = getDefaultUpdateTaskStatus()
+                .setCode(code)
+                .setStatus(1);
 
-    private UpdateTaskStatusRequestBuilder getUpdateTaskStatus() {
-        return builder()
-                .status("TODO")
-                .code(getTaskCodeById.getTaskCode(createdTaskResponse.getTaskId()));
+        taskSteps.updateTaskStatus(request)
+                .assertStatus(SC_BAD_REQUEST);
     }
 }
