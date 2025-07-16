@@ -1,18 +1,18 @@
-package DataBaseManageServices.query;
+package database.query;
 
-import DataBaseManageServices.exception.MySqlException;
+import database.exception.DbException;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static DataBaseManageServices.connection.DatabaseConnection.getConnection;
-import static DataBaseManageServices.util.SqlLoaderQueryFromResources.load;
+import static database.connection.DbConnection.getConnection;
+import static database.util.SqlLoaderQueryFromResources.load;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class DeleteTaskFromDataBase {
-    private static final Logger log = getLogger(DeleteTaskFromDataBase.class);
+public class DeleteTask {
+    private static final Logger log = getLogger(DeleteTask.class);
 
     private static final String SQL_DELETE_TASK = load("delete_task_by_id");
 
@@ -31,7 +31,7 @@ public class DeleteTaskFromDataBase {
 
         } catch (SQLException e) {
             log.error("Ошибка при удалении задачи с id '{}': {}", taskId, e.getMessage(), e);
-            throw new MySqlException("Failed to delete task with id: " + taskId, e);
+            throw new DbException("Failed to delete task with id: " + taskId, e);
         }
     }
 }

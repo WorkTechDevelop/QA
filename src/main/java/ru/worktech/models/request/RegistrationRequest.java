@@ -1,6 +1,5 @@
 package ru.worktech.models.request;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

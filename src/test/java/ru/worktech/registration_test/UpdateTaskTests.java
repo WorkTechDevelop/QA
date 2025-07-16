@@ -1,7 +1,6 @@
 package ru.worktech.registration_test;
 
-import DataBaseManageServices.query.DeleteTaskFromDataBase;
-import DataBaseManageServices.query.GetTaskCodeById;
+import database.query.DeleteTask;
 import enums.TaskPriority;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -19,20 +18,15 @@ import static testDataGenerator.TestDataGenerator.getDefaultUpdateTask;
 public class UpdateTaskTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
-    private final DeleteTaskFromDataBase deleterTask = new DeleteTaskFromDataBase();
-    private TaskDto taskRequest;
+    private final DeleteTask deleterTask = new DeleteTask();
     private String createdTaskId;
-    private final GetTaskCodeById getTaskCodeById = new GetTaskCodeById();
-    private static String taskCode;
 
     @BeforeClass
     public void setup() {
-        taskRequest = getDefaultCreateTask()
+        TaskDto taskRequest = getDefaultCreateTask()
                 .setTitle("Test" + currentTimeMillis())
-                .setPriority(TaskPriority.LOW)
-        ;
+                .setPriority(TaskPriority.LOW);
         createdTaskId = taskSteps.createTask(taskRequest).getStringByJsonPath("taskID");
-        taskCode = getTaskCodeById.getTaskCode(createdTaskId);
     }
 
     @AfterClass
@@ -64,7 +58,7 @@ public class UpdateTaskTests {
         var request = getDefaultUpdateTask()
                 .setTaskId("")
                 .setTitle("")
-                .setPriority(TaskPriority.NULL)
+                .setPriority(null)
                 .setAssignee("");
 
         taskSteps.updateTask(request)

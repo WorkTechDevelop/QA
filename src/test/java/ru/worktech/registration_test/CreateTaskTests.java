@@ -1,7 +1,6 @@
 package ru.worktech.registration_test;
 
-import DataBaseManageServices.query.DeleteTaskFromDataBase;
-import enums.TaskPriority;
+import database.query.DeleteTask;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -15,13 +14,13 @@ import static testDataGenerator.TestDataGenerator.getDefaultCreateTaskRequestMap
 public class CreateTaskTests {
 
     private final TaskSteps taskSteps = new TaskSteps();
-    private final DeleteTaskFromDataBase deleteTaskFromDataBase = new DeleteTaskFromDataBase();
+    private final DeleteTask deleteTask = new DeleteTask();
     private String taskId;
 
     @AfterMethod
     public void afterMethod() {
         if (nonNull(taskId)) {
-            deleteTaskFromDataBase.deleteTaskByTaskId(taskId);
+            deleteTask.deleteTaskByTaskId(taskId);
         }
     }
 
@@ -52,16 +51,6 @@ public class CreateTaskTests {
                 .assertStatus(SC_UNAUTHORIZED);
     }
 
-    @Test(testName = "TK-32-Создание новой задачи с допустимыми значениями полей 'title', 'description'",
-            dataProvider = "validFieldValues")
-    public void createTask(String field, String value) {
-        var request = getDefaultCreateTaskRequestMap();
-        request.put(field, value);
-
-        taskSteps.createTaskMap(request)
-                .assertStatus(SC_CREATED);
-    }
-
     @DataProvider(name = "validFieldValues")
     public Object[][] dataProvider() {
         return new Object[][]{
@@ -72,13 +61,14 @@ public class CreateTaskTests {
         };
     }
 
-    @Test(testName = "ТК-32-Негативные ТК на создание задачи",dataProvider = "InvalidFieldValues" )
-    public void createTaskWithoutRequiredFields(String field, String value) {
+    @Test(testName = "TK-32-Создание новой задачи с допустимыми значениями полей 'title', 'description'",
+            dataProvider = "validFieldValues")
+    public void createTask(String field, String value) {
         var request = getDefaultCreateTaskRequestMap();
         request.put(field, value);
 
         taskSteps.createTaskMap(request)
-                .assertStatus(SC_BAD_REQUEST);
+                .assertStatus(SC_CREATED);
     }
 
     @DataProvider(name = "InvalidFieldValues")
@@ -96,5 +86,14 @@ public class CreateTaskTests {
                 {"estimation", "-1"},
                 {"sprintId", "INVALID"},
         };
+    }
+
+    @Test(testName = "ТК-32-Негативные ТК на создание задачи",dataProvider = "InvalidFieldValues" )
+    public void createTaskWithoutRequiredFields(String field, String value) {
+        var request = getDefaultCreateTaskRequestMap();
+        request.put(field, value);
+
+        taskSteps.createTaskMap(request)
+                .assertStatus(SC_BAD_REQUEST);
     }
 }

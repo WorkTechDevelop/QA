@@ -5,6 +5,7 @@ import enums.TaskStatus;
 import enums.TaskType;
 import ru.worktech.models.TaskDto;
 import ru.worktech.models.request.RegistrationRequest;
+import ru.worktech.models.request.UpdateTaskStatusRequest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class TestDataGenerator {
 
     public static TaskDto getDefaultCreateTask() {
         return new TaskDto()
+                .setProjectId("17565a09-5b2d-4edd-acf0-d69b3ce57b9d")
                 .setTitle("TestEntity")
                 .setDescription("Correct")
                 .setAssignee("37563a09-5b2d-4edd-acf0-d69b3ce57b9d")
@@ -73,7 +75,7 @@ public class TestDataGenerator {
                 .setFirstName("defaultFirstName")
                 .setMiddleName("defaultMiddleName")
                 .setPhone("+79991001010")
-                .setBirthDate("01-01-1971")
+                .setBirthDate("2020-01-01")
                 .setGender("MALE");
     }
 
@@ -89,5 +91,11 @@ public class TestDataGenerator {
         registrationMap.put("birthDate", "01-01-1971");
         registrationMap.put("gender", "MALE");
         return registrationMap;
+    }
+
+    public static UpdateTaskStatusRequest getDefaultUpdateTaskStatus(){
+        return new UpdateTaskStatusRequest()
+                .setStatus(1)
+                .setCode("");
     }
 }

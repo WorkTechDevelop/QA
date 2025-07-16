@@ -2,7 +2,6 @@ package ru.worktech.models.request;
 
 import enums.TaskPriority;
 import enums.TaskType;
-import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

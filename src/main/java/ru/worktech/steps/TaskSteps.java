@@ -5,7 +5,6 @@ import io.restassured.response.Response;
 import ru.worktech.core.AssertableResponse;
 import ru.worktech.models.TaskDto;
 import ru.worktech.models.request.UpdateTaskStatusRequest;
-import ru.worktech.models.request.CreateTaskRequest;
 import ru.worktech.services.TaskService;
 
 import java.util.Map;
@@ -28,13 +27,13 @@ public class TaskSteps {
 
     @Step("Создать задачу без авторизации")
     public AssertableResponse createTaskWithOutAuth(TaskDto request) {
-        Response response = taskService.createTaskWithoutAuth(request);
+        Response response = taskService.createTaskWithOutAuth(request);
         return new AssertableResponse(response);
     }
 
     @Step("Обновить задачу")
     public AssertableResponse updateTask(TaskDto request) {
-        Response response = taskService.editTask(request);
+        Response response = taskService.updateTask(request);
         return new AssertableResponse(response);
     }
 

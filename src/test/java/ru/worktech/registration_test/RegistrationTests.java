@@ -1,10 +1,9 @@
 package ru.worktech.registration_test;
 
-import DataBaseManageServices.query.DeleteUserFromDataBase;
+import database.query.DeleteUser;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ru.worktech.models.request.RegistrationRequest;
 import ru.worktech.steps.UserSteps;
 
 import static java.util.Objects.nonNull;
@@ -15,7 +14,7 @@ import static testDataGenerator.TestDataGenerator.*;
 public class RegistrationTests {
 
     private final UserSteps userSteps = new UserSteps();
-    private final DeleteUserFromDataBase dbManage = new DeleteUserFromDataBase();
+    private final DeleteUser dbManage = new DeleteUser();
     private String userEmail;
 
     @AfterMethod
@@ -74,15 +73,6 @@ public class RegistrationTests {
                 .assertStatus(SC_BAD_REQUEST);
     }
 
-    @Test(testName = "ТК-311- Негативные тесты на регистрацию", dataProvider ="InvalidFieldValues" )
-    public void registrationFailTests(String field, String value){
-       var request = getDefaultCreateTaskRequestMap();
-       request.put(field, value);
-
-       userSteps.registerUserMap(request)
-               .assertStatus(SC_BAD_REQUEST);
-    }
-
     @DataProvider(name = "InvalidFieldValues")
     public Object[][] dataProvider1() {
         return new Object[][]{
@@ -92,5 +82,14 @@ public class RegistrationTests {
                 {"email", "default@ru"},
                 {"email", "testEmail*mail.ru"}
         };
+    }
+
+    @Test(testName = "ТК-311- Негативные тесты на регистрацию", dataProvider ="InvalidFieldValues" )
+    public void registrationFailTests(String field, String value){
+       var request = getDefaultCreateTaskRequestMap();
+       request.put(field, value);
+
+       userSteps.registerUserMap(request)
+               .assertStatus(SC_BAD_REQUEST);
     }
 }

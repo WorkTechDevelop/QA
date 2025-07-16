@@ -1,4 +1,4 @@
-package DataBaseManageServices.util;
+package database.util;
 
 import java.io.IOException;
 

@@ -1,6 +1,5 @@
 package ru.worktech.services;
 
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import ru.worktech.core.BaseApiService;
@@ -9,7 +8,6 @@ import ru.worktech.models.request.UpdateTaskStatusRequest;
 
 import java.util.Map;
 
-import static io.restassured.RestAssured.given;
 import static ru.worktech.endpoints.ApiEndpoints.*;
 
 public class TaskService extends BaseApiService {
@@ -24,12 +22,12 @@ public class TaskService extends BaseApiService {
                 .post(CREATE_TASK_ENDPOINT.getAddress());
     }
 
-    public Response createTaskWithoutAuth(TaskDto request) {
+    public Response createTaskWithOutAuth(TaskDto request) {
         return getSpecWithOutAuth(request)
                 .post(CREATE_TASK_ENDPOINT.getAddress());
     }
 
-    public Response editTask(TaskDto request) {
+    public Response updateTask(TaskDto request) {
         return getSpec(request).put(EDITE_TASK_ENDPOINT.getAddress());
     }
 
