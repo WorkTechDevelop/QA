@@ -88,8 +88,8 @@ public class UserQuery extends DbConnection {
         PreparedStatement stmt = initConnection().prepareStatement(
                 "INSERT INTO users (" +
                         "id, is_active, birth_date, email, first_name, last_name, gender, middle_name, " +
-                        "password, phone, confirmation_token, last_project_id) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                        "password, phone, confirmed_at, confirmation_token, last_project_id) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         stmt.setString(1, userDTO.getId());
         stmt.setBoolean(2, userDTO.is_active());
         stmt.setDate(3, userDTO.getBirth_date() == null ? null : userDTO.getBirth_date());
@@ -100,8 +100,9 @@ public class UserQuery extends DbConnection {
         stmt.setString(8, userDTO.getMiddle_name());
         stmt.setString(9, userDTO.getPassword());
         stmt.setString(10, userDTO.getPhone());
-        stmt.setString(11, userDTO.getConfirmation_token());
-        stmt.setString(12, userDTO.getLast_project_id());
+        stmt.setTimestamp(11, userDTO.getConfirmed_at());
+        stmt.setString(12, userDTO.getConfirmation_token());
+        stmt.setString(13, userDTO.getLast_project_id());
         return stmt;
     }
 }

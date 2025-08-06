@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.joda.time.DateTime;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Builder
 @Getter
@@ -29,7 +30,7 @@ public class UserDTO {
     @NotNull
     private String password;
     private String phone;
-    private DateTime confirmed_at;
+    private Timestamp confirmed_at;
     private String confirmation_token;
     private String last_project_id;
 }

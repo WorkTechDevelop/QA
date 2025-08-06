@@ -3,6 +3,7 @@ package ru.worktech.registration_test;
 import database.connection.DbConnection;
 import database.dto.UserDTO;
 import database.query.UserQuery;
+import org.joda.time.DateTime;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
@@ -11,6 +12,8 @@ import ru.worktech.models.request.AuthorizationRequest;
 import ru.worktech.steps.UserSteps;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 import static org.apache.http.HttpStatus.SC_OK;
@@ -30,14 +33,18 @@ public class AuthorizationTests extends UserSteps {
         userEmail = generateRandomEmail();
         System.out.printf("Test user email = [%s]\n", userEmail);
         String passwordHash = "$2a$10$KaVHluqzpnf5SZt5AQMwHu012fwB2DE803njWq9y19cddH3Qj8baW";
+        Timestamp timestamp = new Timestamp(Instant.now().toEpochMilli());
+        long oneDay = 24 * 60 * 60 * 1000;
+        timestamp.setTime(timestamp.getTime() - oneDay);
         userDTO = UserDTO.builder()
                 .id(UUID.randomUUID().toString())
                 .email(userEmail)
                 .is_active(true)
                 .first_name("Random")
                 .last_name("Test")
-                .gender("Male")
+                .gender("MALE")
                 .password(passwordHash)
+                .confirmed_at(timestamp)
                 .build();
         userQuery.create(userDTO);
         userQuery.createRole(userDTO.getId(), "ADMIN");
