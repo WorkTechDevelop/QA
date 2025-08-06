@@ -1,9 +1,7 @@
 package ru.worktech.registration_test;
 
-import database.connection.DbConnection;
 import database.dto.UserDTO;
 import database.query.UserQuery;
-import org.joda.time.DateTime;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
