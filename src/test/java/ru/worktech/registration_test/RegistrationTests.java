@@ -1,6 +1,6 @@
 package ru.worktech.registration_test;
 
-import database.query.DeleteUser;
+import database.query.UserQuery;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -14,13 +14,13 @@ import static testDataGenerator.TestDataGenerator.*;
 public class RegistrationTests {
 
     private final UserSteps userSteps = new UserSteps();
-    private final DeleteUser dbManage = new DeleteUser();
+    private final UserQuery dbManage = new UserQuery();
     private String userEmail;
 
     @AfterMethod
     public void afterMethod() {
         if (nonNull(userEmail)) {
-            dbManage.deleteUserByEmail(userEmail);
+            dbManage.deleteByEmail(userEmail);
         }
     }
 

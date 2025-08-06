@@ -1,5 +1,6 @@
 package database.query;
 
+import database.connection.DbConnection;
 import database.exception.DbException;
 import org.slf4j.Logger;
 
@@ -8,17 +9,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static database.connection.DbConnection.getConnection;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class GetTaskCodeById {
+public class GetTaskCodeById extends DbConnection {
 
     private static final Logger log = getLogger(GetTaskCodeById.class);
 
     public String getTaskCode(String taskId) {
-        Connection conn = getConnection();
+        Connection connection;
         try {
-            PreparedStatement stmt = conn.prepareStatement("SELECT code FROM task_model WHERE id = ?");
+            connection = initConnection();
+        } catch (SQLException e) {
+            throw new DbException("Cannot connect to database", e);
+        }
+        try {
+            PreparedStatement stmt = connection.prepareStatement("SELECT code FROM task_model WHERE id = ?");
             stmt.setString(1, taskId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {

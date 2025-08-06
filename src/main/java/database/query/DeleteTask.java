@@ -1,5 +1,6 @@
 package database.query;
 
+import database.connection.DbConnection;
 import database.exception.DbException;
 import org.slf4j.Logger;
 
@@ -7,17 +8,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static database.connection.DbConnection.getConnection;
 import static database.util.SqlLoaderQueryFromResources.load;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class DeleteTask {
+public class DeleteTask extends DbConnection {
     private static final Logger log = getLogger(DeleteTask.class);
 
     private static final String SQL_DELETE_TASK = load("delete_task_by_id");
 
     public void deleteTaskByTaskId(String taskId) {
-        try (Connection conn = getConnection();
+        try (Connection conn = initConnection();
              PreparedStatement stmt = conn.prepareStatement(SQL_DELETE_TASK)) {
 
             stmt.setString(1, taskId);

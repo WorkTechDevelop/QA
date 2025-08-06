@@ -28,7 +28,7 @@ public class UserService extends BaseApiService {
 
 
     public Response loginUser(AuthorizationRequest user) {
-        return getRequestSpec()
+        return getRequestSpecWithOutAuth()
                 .body(user)
                 .when()
                 .post(AUTHORIZATION_ENDPOINT.getAddress());

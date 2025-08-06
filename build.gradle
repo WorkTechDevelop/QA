@@ -28,6 +28,7 @@ ext {
     log4jVersion = '2.23.1'
     jacksonVersion = '2.15.2'
     mySQLVersion = '9.3.0'
+    postgreSQLVersion = '42.7.7'
 }
 
 dependencies {
@@ -42,6 +43,7 @@ dependencies {
     implementation "org.aeonbits.owner:owner:$ownerVersion"
     implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
     implementation "com.mysql:mysql-connector-j:$mySQLVersion"
+    implementation "org.postgresql:postgresql:$postgreSQLVersion"
     testImplementation "io.qameta.allure:allure-assertj:$allureVersion"
     testImplementation "io.qameta.allure:allure-rest-assured:$allureVersion"
     testImplementation "org.hamcrest:hamcrest:$hamcrestVersion"
