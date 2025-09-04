@@ -1,20 +1,17 @@
 package ru.worktech.registration_test;
 
-import database.query.DeleteTask;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ru.worktech.steps.TaskSteps;
+import ru.worktech.common.AbstractBaseTests;
 
 import static java.util.Objects.nonNull;
 import static org.apache.http.HttpStatus.*;
 import static testDataGenerator.TestDataGenerator.getDefaultCreateTask;
 import static testDataGenerator.TestDataGenerator.getDefaultCreateTaskRequestMap;
 
-public class CreateTaskTests {
+public class CreateTaskTests extends AbstractBaseTests {
 
-    private final TaskSteps taskSteps = new TaskSteps();
-    private final DeleteTask deleteTask = new DeleteTask();
     private String taskId;
 
     @AfterMethod
@@ -88,7 +85,7 @@ public class CreateTaskTests {
         };
     }
 
-    @Test(testName = "ТК-32-Негативные ТК на создание задачи",dataProvider = "InvalidFieldValues" )
+    @Test(testName = "ТК-32-Негативные ТК на создание задачи", dataProvider = "InvalidFieldValues")
     public void createTaskWithoutRequiredFields(String field, String value) {
         var request = getDefaultCreateTaskRequestMap();
         request.put(field, value);

@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import static database.util.SqlLoaderQueryFromResources.load;
+import static database.utils.SqlLoaderQueryFromResources.load;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class DeleteTask extends DbConnection {

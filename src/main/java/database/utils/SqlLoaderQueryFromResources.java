@@ -1,4 +1,4 @@
-package database.util;
+package database.utils;
 
 import java.io.IOException;
 

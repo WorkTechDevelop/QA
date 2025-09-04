@@ -45,6 +45,7 @@ public class UserQuery extends DbConnection {
     public void deleteByEmail(String email) {
         try {
             prepareDeleteRoleForUser(email).executeUpdate();
+            prepareDeleteRefreshTokenForUser(email).executeUpdate();
             int rows = prepareDeleteUser(email).executeUpdate();
             if (rows > 0) {
                 log.info("Пользователь с email '{}' был удалён.", email);
@@ -71,6 +72,13 @@ public class UserQuery extends DbConnection {
     private PreparedStatement prepareDeleteRoleForUser(String userEmail) throws SQLException {
         PreparedStatement stmt = initConnection().prepareStatement(
                 "DELETE FROM user_role WHERE user_id in (SELECT id FROM users WHERE email = ?); ");
+        stmt.setString(1, userEmail);
+        return stmt;
+    }
+
+    private PreparedStatement prepareDeleteRefreshTokenForUser(String userEmail) throws SQLException {
+        PreparedStatement stmt = initConnection().prepareStatement(
+                "DELETE FROM refresh_token WHERE user_id in (SELECT id FROM users WHERE email = ?); ");
         stmt.setString(1, userEmail);
         return stmt;
     }

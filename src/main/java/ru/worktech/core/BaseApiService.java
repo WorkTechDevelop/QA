@@ -1,5 +1,6 @@
 package ru.worktech.core;
 
+import database.dto.UserDTO;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.response.Response;
@@ -18,6 +19,7 @@ public abstract class BaseApiService {
 
     protected static final ApiConfig config = create(ApiConfig.class);
     private static String authToken;
+    protected UserDTO currentUser;
 
     static {
         registerParser("text/plain", JSON);
