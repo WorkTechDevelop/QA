@@ -7,18 +7,19 @@ import org.testng.annotations.BeforeMethod;
 
 import java.sql.SQLException;
 
-public class FreshUserTest extends AbstractBaseTests{
+public class FreshUserTest extends BaseApiTests {
     protected UserDTO currentUser;
 
     @BeforeMethod
     public void createFreshUser() throws SQLException {
-        currentUser = UserFactory.create();
+        currentUser = UserFactory.createUser();
     }
 
     @AfterMethod
     public void deleteFreshUser() throws SQLException {
         if (currentUser != null) {
-            UserFactory.delete(currentUser.getEmail());
+            UserFactory.deleteUser(currentUser.getEmail());
+            currentUser = null;
         }
     }
 }
