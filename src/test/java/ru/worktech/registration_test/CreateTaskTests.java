@@ -3,29 +3,24 @@ package ru.worktech.registration_test;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ru.worktech.common.AbstractBaseTests;
+import ru.worktech.common.BaseApiTests;
+import ru.worktech.common.SharedUserTest;
 
 import static java.util.Objects.nonNull;
 import static org.apache.http.HttpStatus.*;
 import static testDataGenerator.TestDataGenerator.getDefaultCreateTask;
 import static testDataGenerator.TestDataGenerator.getDefaultCreateTaskRequestMap;
 
-public class CreateTaskTests extends AbstractBaseTests {
+public class CreateTaskTests extends BaseApiTests {
 
     private String taskId;
+
 
     @AfterMethod
     public void afterMethod() {
         if (nonNull(taskId)) {
-            deleteTask.deleteTaskByTaskId(taskId);
+            getTaskQueries().deleteTask(taskId);
         }
-    }
-
-    @Test(testName = "TK-32-1-Создание новой задачи")
-    public void testCreateTaskSuccess() {
-        taskId = taskSteps.createTask(getDefaultCreateTask())
-                .assertStatus(SC_CREATED)
-                .getStringByJsonPath("taskId");
     }
 
     @Test(testName = "TK-32-5-Cоздание задачи без необязательных полей (DESCRIPTION, SPRINT_ID, ESTIMATION)")
@@ -35,7 +30,7 @@ public class CreateTaskTests extends AbstractBaseTests {
                 .setSprintId(null)
                 .setEstimation(null);
 
-        taskId = taskSteps.createTask(request)
+        taskId = getTaskSteps().createTask(request)
                 .assertStatus(SC_OK)
                 .getStringByJsonPath("taskId");
     }
@@ -44,7 +39,7 @@ public class CreateTaskTests extends AbstractBaseTests {
     public void testCreateTaskFailUnauthenticated() {
         var request = getDefaultCreateTask();
 
-        taskSteps.createTaskWithOutAuth(request)
+        getTaskSteps().createTaskWithOutAuth(request)
                 .assertStatus(SC_UNAUTHORIZED);
     }
 
@@ -64,7 +59,7 @@ public class CreateTaskTests extends AbstractBaseTests {
         var request = getDefaultCreateTaskRequestMap();
         request.put(field, value);
 
-        taskSteps.createTaskMap(request)
+        getTaskSteps().createTaskMap(request)
                 .assertStatus(SC_CREATED);
     }
 
@@ -90,7 +85,7 @@ public class CreateTaskTests extends AbstractBaseTests {
         var request = getDefaultCreateTaskRequestMap();
         request.put(field, value);
 
-        taskSteps.createTaskMap(request)
+        getTaskSteps().createTaskMap(request)
                 .assertStatus(SC_BAD_REQUEST);
     }
 }
