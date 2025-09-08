@@ -1,7 +1,6 @@
 package ru.worktech.registration_test;
 
 
-import database.query.DeleteTask;
 import database.query.GetTaskCodeById;
 import enums.TaskPriority;
 import enums.TaskStatus;
@@ -9,7 +8,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ru.worktech.steps.TaskSteps;
+import ru.worktech.common.BaseApiTests;
+import ru.worktech.common.FreshUserTest;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.nonNull;
@@ -19,10 +19,9 @@ import static testDataGenerator.TestDataGenerator.getDefaultCreateTask;
 import static testDataGenerator.TestDataGenerator.getDefaultUpdateTaskStatus;
 
 
-public class UpdateTaskStatusTests {
+public class UpdateTaskStatusTests extends BaseApiTests {
 
-    private final TaskSteps taskSteps = new TaskSteps();
-    private final DeleteTask deleterTask = new DeleteTask();
+
     private String createdTaskId;
     private final GetTaskCodeById getTaskCodeById = new GetTaskCodeById();
 
@@ -31,13 +30,13 @@ public class UpdateTaskStatusTests {
         var taskRequest = getDefaultCreateTask()
                 .setTitle("Test" + currentTimeMillis())
                 .setPriority(TaskPriority.LOW);
-        createdTaskId = taskSteps.createTask(taskRequest).getStringByJsonPath("id");
+        createdTaskId = getTaskSteps().createTask(taskRequest).getStringByJsonPath("id");
     }
 
     @AfterClass
     public void tearDown() {
         if (nonNull(createdTaskId)) {
-            deleterTask.deleteTaskByTaskId(createdTaskId);
+            getTaskQueries().deleteTask(createdTaskId);
         }
     }
 
@@ -46,7 +45,7 @@ public class UpdateTaskStatusTests {
         var request = getDefaultUpdateTaskStatus()
                 .setCode(getTaskCodeById.getTaskCode(createdTaskId));
 
-        taskSteps.updateTaskStatus(request)
+        getTaskSteps().updateTaskStatus(request)
                 .assertStatus(SC_OK);
     }
 
@@ -56,7 +55,7 @@ public class UpdateTaskStatusTests {
                 .setCode(getTaskCodeById.getTaskCode(createdTaskId))
                 .setStatus(1);
 
-        taskSteps.updateTaskStatusWithOutAuth(request)
+        getTaskSteps().updateTaskStatusWithOutAuth(request)
                 .assertStatus(SC_BAD_REQUEST);
     }
 
@@ -75,7 +74,7 @@ public class UpdateTaskStatusTests {
                 .setCode(code)
                 .setStatus(1);
 
-        taskSteps.updateTaskStatus(request)
+        getTaskSteps().updateTaskStatus(request)
                 .assertStatus(SC_BAD_REQUEST);
     }
 }
