@@ -1,12 +1,12 @@
 package ru.worktech.registration_test;
 
-import database.query.DeleteTask;
 import enums.TaskPriority;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import ru.worktech.common.BaseApiTests;
+import ru.worktech.common.FreshUserTest;
 import ru.worktech.models.TaskDto;
-import ru.worktech.steps.TaskSteps;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.Objects.nonNull;
@@ -15,10 +15,8 @@ import static org.apache.http.HttpStatus.SC_OK;
 import static testDataGenerator.TestDataGenerator.getDefaultCreateTask;
 import static testDataGenerator.TestDataGenerator.getDefaultUpdateTask;
 
-public class UpdateTaskTests {
+public class UpdateTaskTests extends BaseApiTests {
 
-    private final TaskSteps taskSteps = new TaskSteps();
-    private final DeleteTask deleterTask = new DeleteTask();
     private String createdTaskId;
 
     @BeforeClass
@@ -26,19 +24,19 @@ public class UpdateTaskTests {
         TaskDto taskRequest = getDefaultCreateTask()
                 .setTitle("Test" + currentTimeMillis())
                 .setPriority(TaskPriority.LOW);
-        createdTaskId = taskSteps.createTask(taskRequest).getStringByJsonPath("taskID");
+        createdTaskId = getTaskSteps().createTask(taskRequest).getStringByJsonPath("taskID");
     }
 
     @AfterClass
     public void tearDown() {
         if (nonNull(createdTaskId)) {
-            deleterTask.deleteTaskByTaskId(createdTaskId);
+            getTaskQueries().deleteTask(createdTaskId);
         }
     }
 
     @Test(testName = "TK-32-1-Успешное редактирование задачи с правильными данными")
     public void testUpdateTaskSuccess() {
-        taskSteps.updateTask(getDefaultUpdateTask()
+        getTaskSteps().updateTask(getDefaultUpdateTask()
                         .setTaskId(createdTaskId))
                 .assertStatus(SC_OK);
     }
@@ -49,7 +47,7 @@ public class UpdateTaskTests {
                 .setTaskId(createdTaskId)
                 .setTitle("T");
 
-        taskSteps.updateTask(request)
+        getTaskSteps().updateTask(request)
                 .assertStatus(SC_OK);
     }
 
@@ -61,7 +59,7 @@ public class UpdateTaskTests {
                 .setPriority(null)
                 .setAssignee("");
 
-        taskSteps.updateTask(request)
+        getTaskSteps().updateTask(request)
                 .assertStatus(SC_BAD_REQUEST);
     }
 }
