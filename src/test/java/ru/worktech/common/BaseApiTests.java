@@ -1,6 +1,5 @@
 package ru.worktech.common;
 
-import database.dto.UserDTO;
 import database.query.TaskQueries;
 import database.query.UserQueries;
 import ru.worktech.steps.TaskSteps;
