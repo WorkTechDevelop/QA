@@ -1,26 +1,26 @@
 package ru.worktech.registration_test;
 
-import database.query.UserQuery;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ru.worktech.steps.UserSteps;
+import ru.worktech.common.BaseApiTests;
+import ru.worktech.common.FreshUserTest;
 
 import static java.util.Objects.nonNull;
 import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
 import static org.apache.http.HttpStatus.SC_OK;
 import static testDataGenerator.TestDataGenerator.*;
 
-public class RegistrationTests {
+public class RegistrationTests extends BaseApiTests {
 
-    private final UserSteps userSteps = new UserSteps();
-    private final UserQuery dbManage = new UserQuery();
+
+
     private String userEmail;
 
     @AfterMethod
     public void afterMethod() {
         if (nonNull(userEmail)) {
-            dbManage.deleteByEmail(userEmail);
+            getUserQueries().deleteByEmail(userEmail);
         }
     }
 
@@ -30,7 +30,7 @@ public class RegistrationTests {
         var request = getDefaultRegistration()
                 .setEmail(generateRandomEmail());
 
-        userSteps.registerUser(request)
+        userSteps().registerUser(request)
                 .assertStatus(SC_OK);
     }
 
@@ -41,15 +41,15 @@ public class RegistrationTests {
                 .setEmail(userEmail)
                 .setMiddleName("");
 
-        userSteps.registerUser(request)
+        userSteps().registerUser(request)
                 .assertStatus(SC_OK);
     }
 
     @Test(testName = "TK-311-2-Проверка регистрации пользователя, который уже существует")
     public void testRegistrationFailExistedUser() {
-        userSteps.registerUser(getDefaultRegistration());
+        userSteps().registerUser(getDefaultRegistration());
 
-        userSteps.registerUser(getDefaultRegistration())
+        userSteps().registerUser(getDefaultRegistration())
                 .assertStatus(SC_BAD_REQUEST);
     }
 
@@ -59,7 +59,7 @@ public class RegistrationTests {
                 .setPassword("Av1234")
                 .setConfirmPassword("Av1234");
 
-        userSteps.registerUser(request)
+        userSteps().registerUser(request)
                 .assertStatus(SC_BAD_REQUEST);
     }
 
@@ -69,7 +69,7 @@ public class RegistrationTests {
                 .setPassword("defaultPassword123")
                 .setConfirmPassword("defaultPassword12");
 
-        userSteps.registerUser(request)
+        userSteps().registerUser(request)
                 .assertStatus(SC_BAD_REQUEST);
     }
 
@@ -89,7 +89,7 @@ public class RegistrationTests {
        var request = getDefaultCreateTaskRequestMap();
        request.put(field, value);
 
-       userSteps.registerUserMap(request)
+       userSteps().registerUserMap(request)
                .assertStatus(SC_BAD_REQUEST);
     }
 }
