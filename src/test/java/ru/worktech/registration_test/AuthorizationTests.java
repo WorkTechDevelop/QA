@@ -1,15 +1,11 @@
 package ru.worktech.registration_test;
 
 import database.dto.UserDTO;
-import database.query.UserQueries;
 import database.utils.UserFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.worktech.common.BaseApiTests;
-import ru.worktech.common.FreshUserTest;
-import ru.worktech.common.SharedUserTest;
 import ru.worktech.models.request.AuthorizationRequest;
-
 import java.sql.SQLException;
 
 import static org.apache.http.HttpStatus.SC_OK;
