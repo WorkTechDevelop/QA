@@ -1,20 +1,21 @@
 package database.utils;
 
 import database.dto.UserDTO;
-import database.query.UserQuery;
+import database.query.UserQueries;
+import lombok.experimental.UtilityClass;
 
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.UUID;
 
+@UtilityClass
 public class UserFactory {
 
-    private static final String DEFAULT_PASSWORD_HASH =
+    private final String DEFAULT_PASSWORD_HASH =
             "$2a$10$KaVHluqzpnf5SZt5AQMwHu012fwB2DE803njWq9y19cddH3Qj8baW";
 
-
-    public static UserDTO create() throws SQLException {
-        UserQuery userQuery = new UserQuery();
+    public UserDTO createUser() throws SQLException {
+        UserQueries userQuery = new UserQueries();
         String email = "user-" + System.nanoTime() + "@example.com";
         java.sql.Timestamp confirmedAt = new java.sql.Timestamp(Instant.now().toEpochMilli() - 24 * 60 * 60 * 1000);
 
@@ -36,8 +37,8 @@ public class UserFactory {
         return user;
     }
 
-    public static void delete(String email) throws SQLException {
-        UserQuery userQuery = new UserQuery();
+    public void deleteUser(String email) throws SQLException {
+        UserQueries userQuery = new UserQueries();
         userQuery.deleteByEmail(email);
         userQuery.closeConnection();
     }
