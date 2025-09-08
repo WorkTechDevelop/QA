@@ -4,8 +4,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.worktech.common.BaseApiTests;
-import ru.worktech.common.SharedUserTest;
-
 import static java.util.Objects.nonNull;
 import static org.apache.http.HttpStatus.*;
 import static testDataGenerator.TestDataGenerator.getDefaultCreateTask;
