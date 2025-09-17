@@ -1,24 +1,34 @@
 package ru.worktech.registration_test;
 
+import database.query.TaskQuery;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ru.worktech.common.BaseApiTests;
+import ru.worktech.steps.TaskSteps;
+
 import static java.util.Objects.nonNull;
 import static org.apache.http.HttpStatus.*;
 import static testDataGenerator.TestDataGenerator.getDefaultCreateTask;
 import static testDataGenerator.TestDataGenerator.getDefaultCreateTaskRequestMap;
 
-public class CreateTaskTests extends BaseApiTests {
+public class CreateTaskTests {
 
+    private final TaskSteps taskSteps = new TaskSteps();
+    private final TaskQuery deleteTask = new TaskQuery();
     private String taskId;
-
 
     @AfterMethod
     public void afterMethod() {
         if (nonNull(taskId)) {
-            getTaskQueries().deleteTask(taskId);
+            deleteTask.deleteTaskByTaskId(taskId);
         }
+    }
+
+    @Test(testName = "TK-32-1-Создание новой задачи")
+    public void testCreateTaskSuccess() {
+        taskId = taskSteps.createTask(getDefaultCreateTask())
+                .assertStatus(SC_CREATED)
+                .getStringByJsonPath("taskId");
     }
 
     @Test(testName = "TK-32-5-Cоздание задачи без необязательных полей (DESCRIPTION, SPRINT_ID, ESTIMATION)")
@@ -28,7 +38,7 @@ public class CreateTaskTests extends BaseApiTests {
                 .setSprintId(null)
                 .setEstimation(null);
 
-        taskId = getTaskSteps().createTask(request)
+        taskId = taskSteps.createTask(request)
                 .assertStatus(SC_OK)
                 .getStringByJsonPath("taskId");
     }
@@ -37,7 +47,7 @@ public class CreateTaskTests extends BaseApiTests {
     public void testCreateTaskFailUnauthenticated() {
         var request = getDefaultCreateTask();
 
-        getTaskSteps().createTaskWithOutAuth(request)
+        taskSteps.createTaskWithOutAuth(request)
                 .assertStatus(SC_UNAUTHORIZED);
     }
 
@@ -57,7 +67,7 @@ public class CreateTaskTests extends BaseApiTests {
         var request = getDefaultCreateTaskRequestMap();
         request.put(field, value);
 
-        getTaskSteps().createTaskMap(request)
+        taskSteps.createTaskMap(request)
                 .assertStatus(SC_CREATED);
     }
 
@@ -78,12 +88,12 @@ public class CreateTaskTests extends BaseApiTests {
         };
     }
 
-    @Test(testName = "ТК-32-Негативные ТК на создание задачи", dataProvider = "InvalidFieldValues")
+    @Test(testName = "ТК-32-Негативные ТК на создание задачи",dataProvider = "InvalidFieldValues" )
     public void createTaskWithoutRequiredFields(String field, String value) {
         var request = getDefaultCreateTaskRequestMap();
         request.put(field, value);
 
-        getTaskSteps().createTaskMap(request)
+        taskSteps.createTaskMap(request)
                 .assertStatus(SC_BAD_REQUEST);
     }
 }

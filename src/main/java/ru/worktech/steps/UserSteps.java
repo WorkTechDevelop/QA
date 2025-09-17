@@ -11,6 +11,10 @@ import java.util.Map;
 
 public class UserSteps {
 
+    protected String userEmail;
+    protected final String password = "password12345";
+    protected final String passwordHash = "$2a$10$KaVHluqzpnf5SZt5AQMwHu012fwB2DE803njWq9y19cddH3Qj8baW";
+
     private final UserService userService = new UserService();
 
     @Step("зарегистрировать пользователя")

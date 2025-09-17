@@ -1,6 +1,6 @@
 package database.query;
 
-import database.connection.DbConnection;
+import database.connection.DbQueryPreparer;
 import database.exception.DbException;
 import org.slf4j.Logger;
 
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class GetTaskCodeById extends DbConnection {
+public class GetTaskCodeById extends DbQueryPreparer {
 
     private static final Logger log = getLogger(GetTaskCodeById.class);
 

@@ -1,6 +1,5 @@
 package database.query;
 
-import database.connection.DbConnection;
 import database.dto.UserDTO;
 import database.exception.DbException;
 import org.slf4j.Logger;
@@ -9,10 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import static org.slf4j.LoggerFactory.getLogger;
+import static database.connection.DbQueryPreparer.prepareStatement;
 
-public class UserQueries extends DbConnection {
+public class UserQuery {
 
-    private static final Logger log = getLogger(UserQueries.class);
+    private static final Logger log = getLogger(UserQuery.class);
 
     public void createRole(String userId, String roleName) {
         try {
@@ -58,33 +58,29 @@ public class UserQueries extends DbConnection {
         }
     }
 
-    public void closeConnection() throws SQLException {
-        super.closeConnection();
-    }
-
     private PreparedStatement prepareDeleteUser(String userEmail) throws SQLException {
-        PreparedStatement stmt = initConnection().prepareStatement(
+        PreparedStatement stmt = prepareStatement(
                 "DELETE FROM users WHERE email = ?;");
         stmt.setString(1, userEmail);
         return stmt;
     }
 
     private PreparedStatement prepareDeleteRoleForUser(String userEmail) throws SQLException {
-        PreparedStatement stmt = initConnection().prepareStatement(
+        PreparedStatement stmt = prepareStatement(
                 "DELETE FROM user_role WHERE user_id in (SELECT id FROM users WHERE email = ?); ");
         stmt.setString(1, userEmail);
         return stmt;
     }
 
     private PreparedStatement prepareDeleteRefreshTokenForUser(String userEmail) throws SQLException {
-        PreparedStatement stmt = initConnection().prepareStatement(
+        PreparedStatement stmt = prepareStatement(
                 "DELETE FROM refresh_token WHERE user_id in (SELECT id FROM users WHERE email = ?); ");
         stmt.setString(1, userEmail);
         return stmt;
     }
 
     private PreparedStatement prepareInsertRoleForUser(String userId, String roleName) throws SQLException {
-        PreparedStatement stmt = initConnection().prepareStatement(
+        PreparedStatement stmt = prepareStatement(
                 "INSERT INTO user_role (user_id, role_id) " +
                         "VALUES (?, (SELECT id FROM role WHERE name = ?));");
         stmt.setString(1, userId);
@@ -93,7 +89,7 @@ public class UserQueries extends DbConnection {
     }
 
     private PreparedStatement prepareInsert(UserDTO userDTO) throws SQLException {
-        PreparedStatement stmt = initConnection().prepareStatement(
+        PreparedStatement stmt = prepareStatement(
                 "INSERT INTO users (" +
                         "id, is_active, birth_date, email, first_name, last_name, gender, middle_name, " +
                         "password, phone, confirmed_at, confirmation_token, last_project_id) " +
